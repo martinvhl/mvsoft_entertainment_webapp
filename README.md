@@ -1,0 +1,1 @@
+Circle CI status badge: [![CircleCI](https://dl.circleci.com/status-badge/img/gh/martinvhl/mvsoft_entertainment_webapp/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/martinvhl/mvsoft_entertainment_webapp/tree/master)

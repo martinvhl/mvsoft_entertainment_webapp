@@ -10,13 +10,13 @@ public class LoginController {
 	
 	@GetMapping("/showLoginPage")
 	public String showLoginPage() {
-		return "login-page"; //todo create view login-page.html
+		return "login-page";
 	}
 
 	@GetMapping("/access-denied")
 	public String showAccessDenied() {
 		
-		return "access-denied"; //todo create view access-denied.html
+		return "access-denied";
 		
 	}
 }
