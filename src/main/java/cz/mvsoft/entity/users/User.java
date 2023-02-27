@@ -1,10 +1,17 @@
 package cz.mvsoft.entity.users;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -18,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(schema = "security_section",name = "user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -56,5 +63,10 @@ public class User {
 	@Size(max = 50, message = "Your last name needs to be at least 2 and no more than 50 characters long.")
 	private String lastName;
 	
-	private String roles; //mapujeme do tabulky user, ne do rolí, pro to máme příkald v některém z ostatních projektů!!! -> využijeme jen nastavení ve třídě SecurityConfiguration a opět upravíme podle sebe
+	//private String roles; //mapujeme do tabulky user, ne do rolí, pro to máme příkald v některém z ostatních projektů!!! -> využijeme jen nastavení ve třídě SecurityConfiguration a opět upravíme podle sebe
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_roles", 
+	joinColumns = @JoinColumn(name = "user_id"), 
+	inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Collection<Role> roles;
 }

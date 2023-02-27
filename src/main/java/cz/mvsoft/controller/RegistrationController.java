@@ -42,7 +42,7 @@ public class RegistrationController {
 	}
 	
 	@PostMapping("/processRegistration")
-	public String processRegistration(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
+	public String processRegistration(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
 		
 		String userLogin = user.getName();
 		log.info(String.format("Processing registration form for: %s.", userLogin));

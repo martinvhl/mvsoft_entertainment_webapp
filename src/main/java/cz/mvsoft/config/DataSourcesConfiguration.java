@@ -2,6 +2,7 @@ package cz.mvsoft.config;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -23,6 +24,7 @@ public class DataSourcesConfiguration {
 	}
 	
 	@Bean
+	@Qualifier("securityDataSource")
 	@ConfigurationProperties(prefix = "security.datasource")
 	DataSource securityDataSource() {
 		return DataSourceBuilder.create().build();
@@ -30,7 +32,7 @@ public class DataSourcesConfiguration {
 	
 	@Bean
 	@ConfigurationProperties(prefix = "spring.data.jpa.entity")
-	LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, DataSource appDataSource) {
+	LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("securityDataSource") DataSource appDataSource) {
 		return builder.dataSource(appDataSource).build();
 	}
 }

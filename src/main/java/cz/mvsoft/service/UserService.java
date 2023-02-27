@@ -6,7 +6,7 @@ import cz.mvsoft.entity.users.User;
 
 public interface UserService extends UserDetailsService {
 
-	User findByUserName(String userName);
+	public User findByUserName(String userName);
 	
-	void save(User user);
+	public void save(User user);
 }
