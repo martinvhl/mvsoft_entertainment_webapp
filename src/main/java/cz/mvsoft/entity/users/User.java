@@ -13,13 +13,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 	
 	@Id
@@ -27,26 +29,32 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "user_name")
-	@Size(min = 2, max = 50, message = "Your name needs to be at least 2 and no more than 50 characters long.")
-	@NotNull
-	private String shownName;
+	@Column(name = "username")
+	@Size(min = 2, max = 50, message = "Your username needs to be at least 2 and no more than 50 characters long.")
+	@NotNull(message = "is required.")
+	private String name;
 	
-	@NotNull
-	@Email(message = "Please enter valid e-mail address!")
-	@Max(value = 60, message = "Your e-mail address can't be longer than 60 characters.")
-	@Column(name = "email")
-	private String email;
-	
-	@Column(name = "login")
-	@NotNull
-	@Size(min = 8, max = 30, message = "Your login needs to be at least 8 and no more than 30 characters long.")
-	private String login;
-	
-	@NotNull
+	@NotNull(message = "is required.")
 	@Column(name="password")
 	@Min(value = 8, message = "Your password should be at least 8 characters long")
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\n)[A-Za-z\n]{8,}$", message = "Your password should contain at least one number!")
 	private String password;
 	
+	@NotNull(message = "is required.")
+	@Email(message = "Please enter valid e-mail address!")
+	@Max(value = 60, message = "Your e-mail address can't be longer than 60 characters.")
+	@Column(name = "email")
+	private String email;
+	
+	@Column(name = "first_name")
+	@NotNull(message = "is required.")
+	@Size(min = 2, max = 50, message = "Your first name needs to be at least 2 and no more than 50 characters long.")
+	private String firstName;
+	
+	@Column(name = "last_name")
+	@NotNull(message = "is required.")
+	@Size(max = 50, message = "Your last name needs to be at least 2 and no more than 50 characters long.")
+	private String lastName;
+	
+	private String roles; //mapujeme do tabulky user, ne do rolí, pro to máme příkald v některém z ostatních projektů!!! -> využijeme jen nastavení ve třídě SecurityConfiguration a opět upravíme podle sebe
 }

@@ -2,17 +2,18 @@
 CREATE DATABASE security_section;
 USE security_section;
 
-create table users(
+create table user(
     user_id int(10) not null primary key AUTO_INCREMENT,
-    user_name varchar(50) not null,
+    username varchar(50) not null,
     email varchar(60) not null,
-    login varchar(30) not null,
-    password varchar(60) not null
+    password varchar(60) not null,
+    first_name varchar(50) not null,
+    last_name varchar(50) not null
 ) engine InnoDB AUTO_INCREMENT=1;
 
-create table roles(
+create table role(
     role_id int(10) not null primary key AUTO_INCREMENT,
-    role_name varchar(20) not null
+    name varchar(20) not null
 )engine InnoDB AUTO_INCREMENT=1;
 
 create table users_roles(

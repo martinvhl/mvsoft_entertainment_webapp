@@ -24,7 +24,7 @@ public class Actor {
 	private int id;
 	
 	@Column(name="name")
-	@NotNull
+	@NotNull(message = "is required.")
 	@Size(max = 100, message = "Actor's name can't be longer than 100 characters.")
 	private String name;
 }

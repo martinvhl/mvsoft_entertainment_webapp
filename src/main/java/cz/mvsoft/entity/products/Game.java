@@ -27,8 +27,7 @@ import lombok.EqualsAndHashCode;
 public class Game extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinColumn(table = "studios", name = "studio_id")
-	private int developer;
+	private GameStudio developer;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}) //pozor na cascade - je možné, že to nebude ALL!
 	@JoinTable(name = "users_games", joinColumns = @JoinColumn(name = "game_id"),

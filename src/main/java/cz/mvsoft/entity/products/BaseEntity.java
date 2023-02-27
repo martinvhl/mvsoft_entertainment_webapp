@@ -24,10 +24,10 @@ public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull
+	@NotNull(message = "is required.")
 	private int id;
 	
-	@NotNull
+	@NotNull(message = "is required.")
 	@Column(name = "title")
 	@Size(max = 100, message = "Length of the title can't be longer than 100 characters.")
 	private String title;
@@ -45,12 +45,12 @@ public class BaseEntity {
 	@Column(name = "cover", columnDefinition = "mediumblob")
 	private byte[] image;
 	
-	@NotNull
+	@NotNull(message = "is required.")
 	@CreationTimestamp
 	@Column(name = "created_date")
 	private LocalDateTime createdDateTime;
 	
-	@NotNull
+	@NotNull(message = "is required.")
 	@UpdateTimestamp
 	@Column(name = "last_changed_date")
 	private LocalDateTime lastModifiedDateTime;

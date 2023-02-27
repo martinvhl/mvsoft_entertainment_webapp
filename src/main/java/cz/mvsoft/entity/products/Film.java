@@ -34,7 +34,7 @@ public class Film extends BaseEntity {
 	@Column(name = "subtitle")
 	private String subTitle;
 	
-	@NotNull
+	@NotNull(message = "is required.")
 	@Column(name = "director")
 	@Size(max = 100, message = "Length of the director's name can't be longer than 100 characters.")
 	private String director;
