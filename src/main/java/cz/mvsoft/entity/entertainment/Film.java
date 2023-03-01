@@ -1,4 +1,4 @@
-package cz.mvsoft.entity.products;
+package cz.mvsoft.entity.entertainment;
 
 import java.util.List;
 

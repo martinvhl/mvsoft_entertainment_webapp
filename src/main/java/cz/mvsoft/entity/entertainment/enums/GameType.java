@@ -1,4 +1,4 @@
-package cz.mvsoft.entity.products.enums;
+package cz.mvsoft.entity.entertainment.enums;
 
 public enum GameType {
 	FIRST_PERSON_SHOOTER, THIRD_PERSON_SHOOTER, REAL_TIME_STRATEGY, TURN_BASED_STRATEGY, 

@@ -1,10 +1,11 @@
-package cz.mvsoft.dao;
+package cz.mvsoft.dao.securityDao;
 
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import cz.mvsoft.entity.users.User;
 public class UserRepositoryImpl implements UserDao{
 
 	@Autowired
+	@Qualifier("securityEntityManagerFactory")
 	EntityManager entityManager;
 
 	@Override

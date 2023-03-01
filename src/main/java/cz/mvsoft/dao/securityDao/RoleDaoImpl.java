@@ -1,4 +1,4 @@
-package cz.mvsoft.dao;
+package cz.mvsoft.dao.securityDao;
 
 import javax.persistence.EntityManager;
 

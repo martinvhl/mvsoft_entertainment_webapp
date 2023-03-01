@@ -12,8 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cz.mvsoft.dao.RoleDao;
-import cz.mvsoft.dao.UserDao;
+import cz.mvsoft.dao.securityDao.RoleDao;
+import cz.mvsoft.dao.securityDao.UserDao;
 import cz.mvsoft.entity.users.Role;
 import cz.mvsoft.entity.users.User;
 

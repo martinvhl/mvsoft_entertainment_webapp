@@ -13,26 +13,25 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @Configuration
-@EnableJpaRepositories("cz.mvsoft.dao")
+//@EnableJpaRepositories("cz.mvsoft.dao")
 public class DataSourcesConfiguration {
 	
 	@Primary
-	@Bean
-	@ConfigurationProperties(prefix = "app.datasource")
-	DataSource entityDataSource() {
+	@Bean(name = "entertainmentDataSource")
+	@ConfigurationProperties(prefix = "entertainment.datasource")
+	DataSource entertainmentDataSource() {
 		return DataSourceBuilder.create().build();
 	}
 	
-	@Bean
-	@Qualifier("securityDataSource")
+	@Bean(name = "securityDataSource")
 	@ConfigurationProperties(prefix = "security.datasource")
 	DataSource securityDataSource() {
 		return DataSourceBuilder.create().build();
 	}
 	
-	@Bean
-	@ConfigurationProperties(prefix = "spring.data.jpa.entity")
-	LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("securityDataSource") DataSource appDataSource) {
-		return builder.dataSource(appDataSource).build();
-	}
+//	@Bean
+//	@ConfigurationProperties(prefix = "spring.data.jpa.entity")
+//	LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("securityDataSource") DataSource appDataSource) {
+//		return builder.dataSource(appDataSource).build();
+//	}
 }
