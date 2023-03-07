@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -26,13 +25,11 @@ public class EntertainmentDatabaseConfig {
 	private DataSource dataSource;
 
 	@Bean
-	@Primary
 	LocalContainerEntityManagerFactoryBean entertainmentEntityManagerFactory(EntityManagerFactoryBuilder builder) {
-		return builder.dataSource(dataSource).packages("cz.mvsoft.entity").build();
+		return builder.dataSource(dataSource).packages("cz.mvsoft.entity.entertainment").build();
 	}
 	
 	@Bean
-	@Primary
 	PlatformTransactionManager entertainmentTransactionManager(@Qualifier("entertainmentEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
 		return new JpaTransactionManager(entityManagerFactory);
 	}

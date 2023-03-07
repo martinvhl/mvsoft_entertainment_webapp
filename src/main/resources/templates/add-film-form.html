@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+		<title>Add New Film</title>
+	</head>
+	<body>
+		<h3>Add new film to database (fields annotated with * are required)</h3>
+		<form action="#" th:object=${film} th:action="@{/films/addFilm}" method="post">
+			
+			<div th:if="${filmExistsError}">
+				<span th:text="${filmExistsError}"></span>
+			</div>
+			
+			<label for="title">*Film title:</label>
+	        <input type="text" id="title" name="title" th:field="*{title}" />
+	        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</span><br/>
+	        
+	        <label for="subtitle">Subtitle:</label>
+	        <input type="text" id="subTitle" name="subTitle" th:field="*{subTitle}" />
+	        <span th:if="${#fields.hasErrors('subTitle')}" th:errors="*{subTitle}">Subtitle error</span><br/>
+	        
+	        <label for="year">*Year:</label>
+	        <input type="text" id="year" name="year" th:field="*{year}" />
+	        <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</span><br/>
+	        
+	        <label for="director">*Director:</label>
+	        <input type="text" id="director" name="director" th:field="*{director}" />
+	        <span th:if="${#fields.hasErrors('director')}" th:errors="*{director}">Director error</span><br/>
+	        
+	        <label for="description">*Description:</label>
+	        <input type="text" id="description" name="description" th:field="*{description}" />
+	        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</span><br/>
+	        
+	        <label for="length">*Length:</label>
+	        <input type="text" id="length" name="length" th:field="*{length}" />
+	        <span th:if="${#fields.hasErrors('length')}" th:errors="*{length}">Length error</span><br/>
+	        
+	        <label for="image">*Cover image:</label>
+	        <input type="file" accept=".png,.jpg,.jpeg" id="image" name="image" th:field="*{image}" />
+	        <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}">Image error</span><br/>
+	        
+	        <label for="actorsInput">*Actors (separate by comma):</label>
+	        <input type="text" id="actorsInput" name="actorsInput" th:field="*{actorsInput}"/>
+	        <span th:if="${#fields.hasErrors('actorsInput')}" th:errors="*{actorsInput}">Length error</span><br/>
+	        
+			<input type="hidden" th:csrf="${_csrf.token}"/>
+			<button type="submit">Save Film</button>
+		</form>
+	</body>
+</html>

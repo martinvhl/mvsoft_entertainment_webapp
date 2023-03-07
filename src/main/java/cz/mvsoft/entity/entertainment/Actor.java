@@ -6,16 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Entity
-@Table(name = "actors")
+@Table(schema = "entertainment_section", name = "actors")
 @Data
-@Builder
 public class Actor {
 
 	@Id
@@ -24,7 +22,14 @@ public class Actor {
 	private int id;
 	
 	@Column(name="name")
-	@NotNull(message = "is required.")
+	@NotBlank(message = "is required.")
 	@Size(max = 100, message = "Actor's name can't be longer than 100 characters.")
 	private String name;
+
+	public Actor(
+			@NotBlank(message = "is required.") @Size(max = 100, message = "Actor's name can't be longer than 100 characters.") String name) {
+		this.name = name;
+	}
+	
+	
 }

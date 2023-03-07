@@ -1,9 +1,6 @@
 package cz.mvsoft.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,16 +21,8 @@ public class SecurityConfiguration {
     private UserService userService;
 	
 	@Autowired
-	@Qualifier("securityDataSource")
-	DataSource securityDataSource;
-	
-	@Autowired
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
-	public SecurityConfiguration(DataSource securityDataSource) {
-		this.securityDataSource = securityDataSource;
-	}
-	
 	@Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -50,8 +39,15 @@ public class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeHttpRequests(authorization ->
-				authorization
-					.antMatchers("/**").permitAll())
+			authorization
+					.antMatchers("/register/**").permitAll()
+					.antMatchers("/films/list").hasRole("BASIC")
+					.anyRequest().authenticated()
+					)
+			.exceptionHandling(authorization ->
+					authorization
+						.accessDeniedPage("/login/access-denied")
+					)	
 			.formLogin(authorization ->
 					authorization
 						.loginPage("/login/showLoginPage")
@@ -59,10 +55,6 @@ public class SecurityConfiguration {
 						.successHandler(customAuthenticationSuccessHandler)
 						.permitAll())
 			.logout(LogoutConfigurer::permitAll)
-			.exceptionHandling(authorization ->
-					authorization
-						.accessDeniedPage("/access-denied")
-					)
 			.authenticationProvider(authenticationProvider());
 	
 		return httpSecurity.build();

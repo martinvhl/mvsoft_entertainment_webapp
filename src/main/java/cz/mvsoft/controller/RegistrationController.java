@@ -37,14 +37,16 @@ public class RegistrationController {
 //	@PreAuthorize("hasAuthority(ROLE_ADMIN)") můžeme použít pro zamezení přístupu někoho bez role ADMIN
 	@GetMapping("/showRegistrationForm")
 	public String showRegistrationForm(Model model) {
+		log.info("Showing new user registration form!");
 		model.addAttribute("user",new User());
 		return REGISTRATION_FORM;
 	}
 	
+	//TODO - použít DTO pattern User -> UserDto
 	@PostMapping("/processRegistration")
 	public String processRegistration(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
-		
-		String userLogin = user.getName();
+		log.info("Registering new user...");
+		String userLogin = user.getUserName();
 		log.info(String.format("Processing registration form for: %s.", userLogin));
 		
 		//check for errors
@@ -60,8 +62,9 @@ public class RegistrationController {
 			return REGISTRATION_FORM;
 		}
 		userService.save(user);
+		System.out.println(user); //temp help
 		log.info(String.format("User with name %s successfully created!", userLogin));
-		return "redirect:/login/showLoginPage";
+		return "registration-successful";
 	}
 	
 }

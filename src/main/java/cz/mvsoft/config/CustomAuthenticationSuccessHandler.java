@@ -16,6 +16,7 @@ import cz.mvsoft.entity.users.User;
 import cz.mvsoft.service.UserService;
 
 @Component
+//todo change sysout to @slf4j log output
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired

@@ -29,6 +29,7 @@
 						<span class="icon-box"><i class="icon-pass"></i></span>
 						<input type="password" name="password" placeholder="password" class="form-field" >
 					</div>
+					<input type="hidden" th:csrf="${_csrf.token}"/>
 					
 					<div class="form-group">						
 						<div class="btn-box">

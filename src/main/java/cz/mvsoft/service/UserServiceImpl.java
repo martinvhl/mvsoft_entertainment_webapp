@@ -1,5 +1,6 @@
 package cz.mvsoft.service;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -25,16 +26,23 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private RoleDao roleDao;
+	
+	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Override
+	@Transactional
 	public User findByUserName(String userName) {
 		return userDao.findByUserName(userName);
 	}
 
 	@Override
+	@Transactional
 	public void save(User user) {
-		// TODO Auto-generated method stub
-
+		// TODO User => UserDTO mapping (use MapStruct)
+		//todo create userEntertainmentDTO - vytvořit danou entitu pro uložení jen těch polí, která jsou potřeba do entertainment_section db
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_BASIC")));
+		userDao.save(user);
 	}
 	
 	@Override
@@ -44,7 +52,7 @@ public class UserServiceImpl implements UserService {
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
+		return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
 				mapRolesToAuthorities(user.getRoles()));
 	}
 

@@ -19,7 +19,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Entity
-@Table(name = "studios")
+@Table(schema = "entertainment_section", name = "studios")
 @Data
 @Builder
 public class GameStudio {
