@@ -13,27 +13,27 @@
 			</div>
 			
 			<label for="title">*Film title:</label>
-	        <input type="text" id="title" name="title" th:field="*{title}" />
+	        <input type="text" id="title" name="title" th:field="*{title}" placeholder="Title of new film..."/>
 	        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</span><br/>
 	        
 	        <label for="subtitle">Subtitle:</label>
-	        <input type="text" id="subTitle" name="subTitle" th:field="*{subTitle}" />
+	        <input type="text" id="subTitle" name="subTitle" th:field="*{subTitle}" placeholder="Subtitle of new film..."/>
 	        <span th:if="${#fields.hasErrors('subTitle')}" th:errors="*{subTitle}">Subtitle error</span><br/>
 	        
 	        <label for="year">*Year:</label>
-	        <input type="text" id="year" name="year" th:field="*{year}" />
+	        <input type="text" id="year" name="year" th:field="*{year}" placeholder="Year of creation..."/>
 	        <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</span><br/>
 	        
 	        <label for="director">*Director:</label>
-	        <input type="text" id="director" name="director" th:field="*{director}" />
+	        <input type="text" id="director" name="director" th:field="*{director}" placeholder="Director of new film..."/>
 	        <span th:if="${#fields.hasErrors('director')}" th:errors="*{director}">Director error</span><br/>
 	        
 	        <label for="description">*Description:</label>
-	        <input type="text" id="description" name="description" th:field="*{description}" />
+	        <input type="text" id="description" name="description" th:field="*{description}" placeholder="Description of new film..."/>
 	        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</span><br/>
 	        
 	        <label for="length">*Length:</label>
-	        <input type="text" id="length" name="length" th:field="*{length}" />
+	        <input type="text" id="length" name="length" th:field="*{length}" placeholder="Length of new film..."/>
 	        <span th:if="${#fields.hasErrors('length')}" th:errors="*{length}">Length error</span><br/>
 	        
 	        <label for="image">*Cover image:</label>
@@ -41,7 +41,7 @@
 	        <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}">Image error</span><br/>
 	        
 	        <label for="actorsInput">*Actors (separate by comma):</label>
-	        <input type="text" id="actorsInput" name="actorsInput" th:field="*{actorsInput}"/>
+	        <input type="text" id="actorsInput" name="actorsInput" th:field="*{actorsInput}" placeholder="Actors in film..."/>
 	        <span th:if="${#fields.hasErrors('actorsInput')}" th:errors="*{actorsInput}">Length error</span><br/>
 	        
 			<input type="hidden" th:csrf="${_csrf.token}"/>

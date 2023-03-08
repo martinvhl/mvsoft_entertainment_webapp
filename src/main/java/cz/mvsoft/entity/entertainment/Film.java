@@ -55,7 +55,7 @@ public class Film extends BaseEntity {
 	@Transient
 	private String actorsInput;
 	
-	@ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
+	@ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
 	@JoinTable(name = "actors_in_films", joinColumns = @JoinColumn(name = "film_id"),
 			inverseJoinColumns = @JoinColumn(name = "actor_id"))
 	private List<Actor> actors;

@@ -15,23 +15,23 @@
 			</div>
 			
 			<label for="userName">Login:</label>
-	        <input type="text" id="userName" name="userName" th:field="*{userName}" />
+	        <input type="text" id="userName" name="userName" th:field="*{userName}" placeholder="Enter your login..."/>
 	        <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username error</span><br/>
 	
 			<label for="firstName">First name:</label>
-	        <input type="text" id="firstName" name="firstName" th:field="*{firstName}" />
+	        <input type="text" id="firstName" name="firstName" th:field="*{firstName}" placeholder="Enter your first name..."/>
 	        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Username error</span><br/>
 	        
 	        <label for="lastName">Last name:</label>
-	        <input type="text" id="lastName" name="lastName" th:field="*{lastName}" />
+	        <input type="text" id="lastName" name="lastName" th:field="*{lastName}" placeholder="Enter your last name..."/>
 	        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Username error</span><br/>
 	
 	        <label for="password">Password:</label>
-	        <input type="password" id="password" name="password" th:field="*{password}" />
+	        <input type="password" id="password" name="password" th:field="*{password}" placeholder="Enter your password..."/>
 	        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span><br/>
 	
 	        <label for="email">Email:</label>
-	        <input type="email" id="email" name="email" th:field="*{email}" />
+	        <input type="email" id="email" name="email" th:field="*{email}" placeholder="Enter your email..."/>
 	        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span><br/>
 			
 			<input type="hidden" th:csrf="${_csrf.token}"/>

@@ -10,10 +10,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(schema = "entertainment_section", name = "actors")
 @Data
+@NoArgsConstructor
 public class Actor {
 
 	@Id
@@ -21,7 +23,7 @@ public class Actor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name="name")
+	@Column(name="name", unique = true)
 	@NotBlank(message = "is required.")
 	@Size(max = 100, message = "Actor's name can't be longer than 100 characters.")
 	private String name;

@@ -22,7 +22,7 @@ public class GamesService implements BaseService<Game> {
 	}
 
 	@Override
-	public void save(Game theEmployee) {
+	public void save(Game game) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -34,7 +34,7 @@ public class GamesService implements BaseService<Game> {
 	}
 
 	@Override
-	public List<Game> searchByTitle(String theName) {
+	public Game searchByTitle(String theName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
