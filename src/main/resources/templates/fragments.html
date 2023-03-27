@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
+<head>
+	<title>Fragments site (for dev purpose only)</title>
+	<link rel="stylesheet" type="text/css" href="../static/css/fragment_styles.css">
+</head>
+<body>
+	<div th:fragment="header" class="custom_header">
+		<header>
+			<img src="/images/film_sparkles.jpg" alt="Film tape made from sparkles"/>
+			<div class="user-credentials">
+				<span class="credential">User: <span id="username" sec:authentication="name"></span></span><br>
+				<span class="credential">Role(s): <span sec:authentication="principal.authorities"></span></span><br>
+				<span class="credential">
+					<form th:action="@{/logout}" method="POST" action="#">
+					<input type="hidden" th:csrf="${_csrf.token}"/>
+					<input id="logout" type="submit" value="Logout" />
+					</form>
+				</span>
+			</div>
+		</header>
+	</div>
+	<div th:fragment="navbar" class="custom_navbar">
+		<nav>
+			<ul>
+				<a th:href="@{/films/list}"><li>Films</li></a>
+				<a th:href="@{/games/list}"><li>Games</li></a>
+				<a th:href="@{/login/about-me}"><li>About Me</li></a>
+			</ul>
+		</nav>
+	</div>
+	<div th:fragment="footer" class="custom_footer">
+		<img src="/images/film_sparkles.jpg" alt="Film tape made from sparkles"/>
+		<footer>
+			This is a placeholder for future footer. MVSoft @2023
+		</footer>
+	</div>
+</body>
+</html>

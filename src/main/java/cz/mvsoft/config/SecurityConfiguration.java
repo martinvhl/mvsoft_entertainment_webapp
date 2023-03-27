@@ -27,7 +27,7 @@ public class SecurityConfiguration {
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+	
     @Bean
     DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
@@ -36,18 +36,20 @@ public class SecurityConfiguration {
         return auth;
     }
 	
+    //TODO pro zabezpečení MVC aplikace je csrf doporučován, pro REST naopak -> změnit csrf na JWT zabezpečení!!!
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeHttpRequests(authorization ->
 			authorization
-					.antMatchers("/register/**").permitAll()
-					.antMatchers("/films/list").hasRole("BASIC")
-					.anyRequest().authenticated()
+					.antMatchers("/","/register/**").permitAll()
+					.antMatchers("/films/list","/games/list").hasRole("BASIC")
+					.antMatchers("/films/showAddFilmForm","/films/addFilm","/games/showGameFilmForm","/games/addGame").hasRole("ADMIN")
+					.anyRequest().permitAll()
 					)
 			.exceptionHandling(authorization ->
 					authorization
 						.accessDeniedPage("/login/access-denied")
-					)	
+					)
 			.formLogin(authorization ->
 					authorization
 						.loginPage("/login/showLoginPage")
@@ -55,7 +57,8 @@ public class SecurityConfiguration {
 						.successHandler(customAuthenticationSuccessHandler)
 						.permitAll())
 			.logout(LogoutConfigurer::permitAll)
-			.authenticationProvider(authenticationProvider());
+			.authenticationProvider(authenticationProvider())
+			.httpBasic(); //pak v Postmanu přidat user credentials do authorization (nezapomenout přepnout do Basic auth)
 	
 		return httpSecurity.build();
 	}

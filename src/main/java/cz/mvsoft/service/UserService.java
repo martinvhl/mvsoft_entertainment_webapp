@@ -8,5 +8,5 @@ public interface UserService extends UserDetailsService {
 
 	public User findByUserName(String userName);
 	
-	public void save(User user);
+	public User save(User user);
 }

@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
@@ -51,11 +50,14 @@ public class Film extends BaseEntity {
 	@Column(name = "length")
 	private int length;
 	
+	@Column(name="film_type")
 	@NotBlank
+	private String filmType;
+	
 	@Transient
 	private String actorsInput;
 	
-	@ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
+	@ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
 	@JoinTable(name = "actors_in_films", joinColumns = @JoinColumn(name = "film_id"),
 			inverseJoinColumns = @JoinColumn(name = "actor_id"))
 	private List<Actor> actors;

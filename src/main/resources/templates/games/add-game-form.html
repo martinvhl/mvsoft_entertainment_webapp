@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+		<title>Add New Game</title>
+		<link rel="icon" type="image/x-icon" href="/images/film.ico">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+	</head>
+	<body>
+		<div th:replace="fragments :: header"></div>
+		<div th:replace="fragments :: navbar"></div>
+		<h3>Add new game to database (fields annotated with * are required)</h3>
+		<form action="#" th:object=${game} th:action="@{/games/addGame}" method="post" enctype="multipart/form-data">
+			
+			<div th:if="${gameExistsError}">
+				<span th:text="${gameExistsError}"></span>
+			</div>
+			
+			<label for="title">*Game title:</label>
+	        <input type="text" id="title" name="title" th:field="*{title}" placeholder="Title of new game..."/>
+	        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</span><br/>
+	       
+	        <label for="year">*Year:</label>
+	        <input type="text" id="year" name="year" th:field="*{year}" placeholder="Year of creation..."/>
+	        <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</span><br/>
+	        
+	        <label for="typedStudio">*Developer:</label>
+		    <input type="text" id="typedStudio" name="typedStudio" th:field="*{typedStudio}" placeholder="Developer of new game..."/>
+		    <span th:if="${#fields.hasErrors('typedStudio')}" th:errors="*{typedStudio}">Developer error</span><br/>
+		        
+		        <!-- Add selection of game studio country -> search game by country of origin -->
+		    
+	        
+	        <label for="description">*Description:</label>
+	        <input type="text" id="description" name="description" th:field="*{description}" placeholder="Description of new game..."/>
+	        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</span><br/>
+	        
+	        <label for="image">*Cover image:</label>
+	        <input type="file" accept="image/png, image/jpg, image/jpeg" id="image" name="imageFile"/>
+	        <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}">Image error</span><br/>
+	        
+	        <label for="gameType">*Choose type of game:</label>
+	        <select id="gameType" name="gameType">
+	        	<option th:each="gameType : ${T(cz.mvsoft.entity.entertainment.enums.GameType).values()}"
+				          th:value="${gameType}"
+				          th:text="${gameType.displayName}">
+				</option>
+	        </select><br>
+	        
+			<input type="hidden" th:csrf="${_csrf.token}"/>
+			<button type="submit">Save Game</button>
+		</form>
+		<hr>
+		<a th:href="@{/games/list}">Back to list...</a>
+		<br>
+		<div th:replace="fragments :: footer"></div>
+	</body>
+</html>

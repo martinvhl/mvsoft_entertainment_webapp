@@ -1,14 +1,17 @@
 package cz.mvsoft.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import cz.mvsoft.dao.entertainmentDao.ActorDao;
 import cz.mvsoft.dao.entertainmentDao.FilmDao;
@@ -26,19 +29,35 @@ public class FilmsService implements BaseService<Film> {
 	
 	@Override
 	public List<Film> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Film> foundFilms = filmDao.findAllByOrderByTitleAsc();
+		for (Film film : foundFilms) {
+			film.setBase64Encoded(Base64.getEncoder().encodeToString(film.getImage()));
+		}
+		return foundFilms;
 	}
 
 	@Override
 	public Film findById(int theId) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Film> foundFilm = filmDao.findById(theId);
+		if (foundFilm.isPresent()) {
+			foundFilm.get().setBase64Encoded(Base64.getEncoder().encodeToString(foundFilm.get().getImage()));
+			List<Actor> foundActors = foundFilm.get().getActors();
+			StringBuilder builder = new StringBuilder();
+			for (int i = 0; i < foundActors.size(); i++) {
+				builder.append(foundActors.get(i).getName());
+				if (i < foundActors.size()-1) {
+					builder.append(", ");
+				}
+			}
+			foundFilm.get().setActorsInput(builder.toString());
+			return foundFilm.get();
+		} else {
+			return null;
+		}
 	}
 
-	//POZOR - je potřeba vytvořit list ze stringu (hodnoty separované čárkami)
 	@Override
-	public void save(Film film) {
+	public Film save(Film film, MultipartFile imageFile) {
 		//mapping String from input to List
 		List<Actor> typedActors = Arrays.asList(film.getActorsInput().split(",")).stream()
 								.map(Actor::new)
@@ -46,19 +65,27 @@ public class FilmsService implements BaseService<Film> {
 		//checking if actors are already present in the db
 		List<Actor> actors = new ArrayList<>();
 		for (Actor actor : typedActors) {
-			actors.add(findOrCreateActor(actor.getName()));
+			actors.add(findOrCreateActor(actor.getName().trim()));
 		}
+		//saving image from multipart file
+		try {
+	        byte[] imageData = imageFile.getBytes();
+	        film.setImage(imageData);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 		//saving film
 		film.setActors(actors);
-		film.setCreatedDateTime(LocalDateTime.now());
+		if (film.getId() == 0)	
+			film.setCreatedDateTime(LocalDateTime.now());
 		film.setLastModifiedDateTime(LocalDateTime.now());
 		filmDao.save(film);
+		return film;
 	}
 
 	@Override
 	public void deleteById(int theId) {
-		// TODO Auto-generated method stub
-		
+		filmDao.deleteById(theId);
 	}
 
 	@Override

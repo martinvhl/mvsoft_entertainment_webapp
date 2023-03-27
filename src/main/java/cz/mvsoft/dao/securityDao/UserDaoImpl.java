@@ -1,9 +1,8 @@
 package cz.mvsoft.dao.securityDao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -19,13 +18,15 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public User findByUserName(String userName) {
+		TypedQuery<User> query = entityManager.createQuery("from User where username=:userName", User.class);
+		query.setParameter("userName", userName);
 		//Possible SQL-Injection vulnerability - use Criteria API - check later!!!
-		Session session = entityManager.unwrap(Session.class);
-		Query<User> theQuery = session.createQuery("from User where username=:userName",User.class);
-		theQuery.setParameter("userName", userName);
+//		Session session = entityManager.unwrap(Session.class);
+//		Query<User> theQuery = session.createQuery("from User where username=:userName",User.class);
+//		theQuery.setParameter("userName", userName);
 		User foundUser = null;
 		try {
-			foundUser = theQuery.getSingleResult();
+			foundUser = query.getSingleResult();
 		} catch (Exception e) {
 			foundUser = null;
 		}
@@ -33,8 +34,9 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public void save(User user) { //TODO Query just a workaround, find out why hibernate is not persisting unidirectional @ManyToMany User->Role
-		Session session = entityManager.unwrap(Session.class);
-		session.saveOrUpdate(user);
+	public User save(User user) {
+//		Session session = entityManager.unwrap(Session.class);
+//		session.saveOrUpdate(user);
+		return entityManager.merge(user);
 	}
 }

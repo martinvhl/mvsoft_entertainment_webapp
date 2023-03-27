@@ -37,12 +37,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void save(User user) {
+	public User save(User user) {
 		// TODO User => UserDTO mapping (use MapStruct)
 		//todo create userEntertainmentDTO - vytvořit danou entitu pro uložení jen těch polí, která jsou potřeba do entertainment_section db
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_BASIC")));
-		userDao.save(user);
+		return userDao.save(user);
 	}
 	
 	@Override

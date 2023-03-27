@@ -10,7 +10,7 @@ public class LoginController {
 	
 	@GetMapping("/showLoginPage")
 	public String showLoginPage() {
-		return "login-page";
+		return "users/login-page";
 	}
 
 	@GetMapping("/access-denied")

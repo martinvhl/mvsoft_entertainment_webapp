@@ -3,10 +3,16 @@
 	<head>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 		<title>Add New Film</title>
+		<link rel="icon" type="image/x-icon" href="/images/film.ico">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
 	</head>
 	<body>
+		<div th:replace="fragments :: header"></div>
+		<div th:replace="fragments :: navbar"></div>
 		<h3>Add new film to database (fields annotated with * are required)</h3>
-		<form action="#" th:object=${film} th:action="@{/films/addFilm}" method="post">
+		<form action="#" th:object=${film} th:action="@{/films/addFilm}" method="post" enctype="multipart/form-data">
+		
+			<input type="hidden" th:field="*{id}"/>
 			
 			<div th:if="${filmExistsError}">
 				<span th:text="${filmExistsError}"></span>
@@ -29,7 +35,7 @@
 	        <span th:if="${#fields.hasErrors('director')}" th:errors="*{director}">Director error</span><br/>
 	        
 	        <label for="description">*Description:</label>
-	        <input type="text" id="description" name="description" th:field="*{description}" placeholder="Description of new film..."/>
+	        <textarea id="description" name="description" th:field="*{description}" placeholder="Description of new film..."></textarea>
 	        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</span><br/>
 	        
 	        <label for="length">*Length:</label>
@@ -37,15 +43,29 @@
 	        <span th:if="${#fields.hasErrors('length')}" th:errors="*{length}">Length error</span><br/>
 	        
 	        <label for="image">*Cover image:</label>
-	        <input type="file" accept=".png,.jpg,.jpeg" id="image" name="image" th:field="*{image}" />
+	        <input type="file" accept="image/png, image/jpg, image/jpeg" id="image" name="imageFile"/>
 	        <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}">Image error</span><br/>
 	        
 	        <label for="actorsInput">*Actors (separate by comma):</label>
 	        <input type="text" id="actorsInput" name="actorsInput" th:field="*{actorsInput}" placeholder="Actors in film..."/>
 	        <span th:if="${#fields.hasErrors('actorsInput')}" th:errors="*{actorsInput}">Length error</span><br/>
 	        
+	        <label for="filmType">*Choose type of film:</label>
+	        <select id="filmType" name="filmType">
+	        	<option th:each="filmType : ${T(cz.mvsoft.entity.entertainment.enums.FilmGenre).values()}"
+				          th:value="${filmType}"
+				          th:text="${filmType.displayName}">
+				</option>
+	        </select><br>
+	 	        
 			<input type="hidden" th:csrf="${_csrf.token}"/>
 			<button type="submit">Save Film</button>
 		</form>
+			<img th:src="*{'data:image/jpeg;base64,'+ film.base64Encoded}" width="100" height="150" alt="Film cover alt"/>
+		
+		<hr>
+		<a th:href="@{/films/list}">Back to list...</a>
+		<br>
+		<div th:replace="fragments :: footer"></div>
 	</body>
 </html>

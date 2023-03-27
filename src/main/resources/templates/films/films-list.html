@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	  lang="en">
+	<head>
+		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/x-icon" href="/images/film.ico">
+		<title>Welcome to the world of films</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/list_style.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+	</head>
+	<body>
+		<div th:replace="fragments :: header"></div>
+		<div class="outer_container">
+			<div th:replace="fragments :: navbar"></div>
+			<div sec:authorize="hasRole('ROLE_ADMIN')" id="authorized">
+				<a th:href="@{/films/showAddFilmForm}">Add new film</a>
+			</div>
+			<div class = "custom_box">
+				<div id="searchBar"> <!-- TODO - Add form for search, create action in controller -->
+					<label for="Search">Find movie: </label>
+					<input id="searchInput" type="text" placeholder="Find movie...">
+					<button type="submit">Search</button>
+				</div>
+				<div th:each="film : ${films}" class="custom-card">
+					<a th:href="@{/films/filmDetail/}+${film.id}"><img th:src="*{'data:image/jpeg;base64,'+ film.base64Encoded}" alt="Film cover alt"/></a>
+				</div>
+			</div>
+		</div>
+		<div th:replace="fragments :: footer"></div>
+	</body>
+</html>

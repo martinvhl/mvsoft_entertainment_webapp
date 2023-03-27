@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<title>Game detail</title>
+		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/x-icon" href="/images/film.ico">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+	</head>
+	<body>
+		<div th:replace="fragments :: header"></div>
+		<div th:replace="fragments :: navbar"></div>
+		<div class="game-box">
+			<h3 th:text="${game.title}"></h3>
+			<h4 th:text="${game.year}"></h4>
+			<h4 th:text="${game.developer.name}"></h4>
+			<img th:src="*{'data:image/jpeg;base64,'+ game.base64Encoded}" width="100" height="150" alt="Film cover alt"/>
+		</div>
+		<hr>
+		<form th:action="@{/games/removeGame/}+${game.id}" method="post" action="#">
+			<input type="hidden" name="_method" value="delete"/>
+			<input type="hidden" th:csrf="${_csrf.token}"/>
+			<input id="remove" type="submit" value="Delete this game" />
+		</form>
+		<a th:href="@{/games/list}">Back to list...</a>
+		<br>
+		<div th:replace="fragments :: footer"></div>
+	</body>
+</html>

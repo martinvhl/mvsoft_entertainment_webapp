@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -38,6 +39,9 @@ public class BaseEntity {
 	@Column(name = "cover")
 	@Size(max = 5242880, message = "Image size must be less than 5MB")
 	private byte[] image;
+	
+	@Transient
+	private String base64Encoded;
 	
 	@CreationTimestamp
 	@Column(name = "created_date")

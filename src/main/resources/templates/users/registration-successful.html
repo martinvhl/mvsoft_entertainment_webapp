@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 	<head>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-		<!-- Add favicon -->
+		<link rel="icon" type="image/x-icon" href="/images/user.ico">
 		<title>Registration successful</title>
 		<!-- Add css link -->
 	</head>
@@ -10,5 +10,7 @@
 		<h3>User successfully registered!</h3>
 		<hr>
 		<a th:href="@{/login/showLoginPage}">Login with new user</a>
+		<br>
+		<div th:replace="fragments :: footer"></div>
 	</body>
 </html>

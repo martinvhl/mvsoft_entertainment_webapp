@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/register")
 public class RegistrationController {
 	
-	private static final String REGISTRATION_FORM = "registration-form";
+	private static final String REGISTRATION_FORM = "users/registration-form";
 	
 	@Autowired
 	UserService userService;
@@ -64,7 +64,7 @@ public class RegistrationController {
 		userService.save(user);
 		System.out.println(user); //temp help
 		log.info(String.format("User with name %s successfully created!", userLogin));
-		return "registration-successful";
+		return "users/registration-successful";
 	}
 	
 }

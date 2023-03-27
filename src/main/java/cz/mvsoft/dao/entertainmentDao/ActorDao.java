@@ -7,4 +7,5 @@ import cz.mvsoft.entity.entertainment.Actor;
 public interface ActorDao extends JpaRepository<Actor, Integer> {
 	
 	public Actor findByName(String name);
+	
 }

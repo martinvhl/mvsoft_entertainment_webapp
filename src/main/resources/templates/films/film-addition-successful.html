@@ -3,10 +3,16 @@
 	<head>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 		<title>Film Successfully Added</title>
+		<link rel="icon" type="image/x-icon" href="/images/film.ico">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
 	</head>
 	<body>
+		<div th:replace="fragments :: header"></div>
+		<div th:replace="fragments :: navbar"></div>
 		<h3>New film successfully added to the database!</h3>
 		<hr>
 		<a th:href="@{/films/list}">Continue...</a>
+		<br>
+		<div th:replace="fragments :: footer"></div>
 	</body>
 </html>
