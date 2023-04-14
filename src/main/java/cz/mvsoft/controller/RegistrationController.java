@@ -2,7 +2,6 @@ package cz.mvsoft.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +24,12 @@ public class RegistrationController {
 	
 	private static final String REGISTRATION_FORM = "users/registration-form";
 	
-	@Autowired
 	UserService userService;
 	
+	public RegistrationController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);

@@ -23,11 +23,15 @@ import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(schema = "entertainment_section", name = "films")
 @Data
+@SuperBuilder //for test purposes (EXPERIMENTAL), alt add super() constructors to field based constructors in children classes
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Film extends BaseEntity {
 	

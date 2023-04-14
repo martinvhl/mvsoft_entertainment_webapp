@@ -13,8 +13,8 @@
 				<span class="credential">Role(s): <span sec:authentication="principal.authorities"></span></span><br>
 				<span class="credential">
 					<form th:action="@{/logout}" method="POST" action="#">
-					<input type="hidden" th:csrf="${_csrf.token}"/>
-					<input id="logout" type="submit" value="Logout" />
+						<input type="hidden" th:csrf="${_csrf.token}"/>
+						<input id="logout" type="submit" value="Logout" />
 					</form>
 				</span>
 			</div>
@@ -32,7 +32,7 @@
 	<div th:fragment="footer" class="custom_footer">
 		<img src="/images/film_sparkles.jpg" alt="Film tape made from sparkles"/>
 		<footer>
-			This is a placeholder for future footer. MVSoft @2023
+			Entertainment catalog app by MVSoft @2023
 		</footer>
 	</div>
 </body>

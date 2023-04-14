@@ -12,6 +12,8 @@
 		<h3>Add new game to database (fields annotated with * are required)</h3>
 		<form action="#" th:object=${game} th:action="@{/games/addGame}" method="post" enctype="multipart/form-data">
 			
+			<input type="hidden" th:field="*{id}"/>
+			
 			<div th:if="${gameExistsError}">
 				<span th:text="${gameExistsError}"></span>
 			</div>
@@ -27,8 +29,6 @@
 	        <label for="typedStudio">*Developer:</label>
 		    <input type="text" id="typedStudio" name="typedStudio" th:field="*{typedStudio}" placeholder="Developer of new game..."/>
 		    <span th:if="${#fields.hasErrors('typedStudio')}" th:errors="*{typedStudio}">Developer error</span><br/>
-		        
-		        <!-- Add selection of game studio country -> search game by country of origin -->
 		    
 	        
 	        <label for="description">*Description:</label>

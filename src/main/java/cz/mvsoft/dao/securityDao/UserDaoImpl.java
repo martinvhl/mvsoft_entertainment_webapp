@@ -20,10 +20,6 @@ public class UserDaoImpl implements UserDao{
 	public User findByUserName(String userName) {
 		TypedQuery<User> query = entityManager.createQuery("from User where username=:userName", User.class);
 		query.setParameter("userName", userName);
-		//Possible SQL-Injection vulnerability - use Criteria API - check later!!!
-//		Session session = entityManager.unwrap(Session.class);
-//		Query<User> theQuery = session.createQuery("from User where username=:userName",User.class);
-//		theQuery.setParameter("userName", userName);
 		User foundUser = null;
 		try {
 			foundUser = query.getSingleResult();
@@ -35,8 +31,6 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public User save(User user) {
-//		Session session = entityManager.unwrap(Session.class);
-//		session.saveOrUpdate(user);
 		return entityManager.merge(user);
 	}
 }

@@ -1,0 +1,13 @@
+.film-box {
+	display:flex;
+}
+
+.film-box .actors {
+	display:flex;
+	flex-direction: column;
+}
+.actors h6 {
+	font-weight: bold;
+	display:block;
+	
+}

@@ -1,5 +1,6 @@
 package cz.mvsoft.dao.securityDao;
 
+
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;

@@ -5,6 +5,11 @@
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" type="image/x-icon" href="/images/film.ico">
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		<script defer>
+			function deleteConfirmation() {
+			return confirm('Are you sure you want to delete this game?');
+			}
+		</script>
 	</head>
 	<body>
 		<div th:replace="fragments :: header"></div>
@@ -19,8 +24,12 @@
 		<form th:action="@{/games/removeGame/}+${game.id}" method="post" action="#">
 			<input type="hidden" name="_method" value="delete"/>
 			<input type="hidden" th:csrf="${_csrf.token}"/>
-			<input id="remove" type="submit" value="Delete this game" />
+			<input id="remove" type="submit" value="Delete this game" onclick="return deleteConfirmation();"/>
 		</form>
+		<a th:href="@{/games/showUpdateForm/}+${game.id}">
+			<button type="button">Update game details</button>
+		</a>
+		<hr>
 		<a th:href="@{/games/list}">Back to list...</a>
 		<br>
 		<div th:replace="fragments :: footer"></div>

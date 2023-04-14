@@ -74,6 +74,7 @@ time, mark, audio, video {
   padding: 10px;
   text-align: center;
   width: 20%;
+  height:auto;
   max-height:50%;
   -webkit-transition: transform 2s;
 }

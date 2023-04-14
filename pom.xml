@@ -14,7 +14,7 @@
 	<name>FilmDatabaseByMVSoft</name>
 	<description>Custom web film database using Spring MVC with support of REST API, multiple users authorization and authentication using Spring Security</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

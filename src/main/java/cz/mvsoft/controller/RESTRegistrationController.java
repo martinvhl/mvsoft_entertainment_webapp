@@ -1,6 +1,5 @@
 package cz.mvsoft.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,14 +14,17 @@ import cz.mvsoft.service.UserService;
 @RequestMapping("/api")
 public class RESTRegistrationController {
 	
-	@Autowired
 	private UserService userService;
 	
+	public RESTRegistrationController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@PostMapping(path = "/register", produces = "application/json")
 	public ResponseEntity<Object> registerUser(@RequestBody User user){
 		User foundUser = userService.findByUserName(user.getUserName());
 		if (foundUser != null) {
-			return new ResponseEntity<>("User with this username already exists!",HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<>("User with this username already exists!",HttpStatus.CONFLICT);
 		}
 		User savedUser = userService.save(user);
 		return new ResponseEntity<>(savedUser,HttpStatus.CREATED);

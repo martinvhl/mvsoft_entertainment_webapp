@@ -17,4 +17,6 @@ public interface BaseService<T extends BaseEntity> {
 	public void deleteById(int theId);
 
 	public T searchByTitle(String theName);
+
+	public List<T> filter(String theName);
 }

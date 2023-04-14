@@ -5,6 +5,12 @@
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" type="image/x-icon" href="/images/film.ico">
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/film-detail.css}">
+		<script defer>
+			function deleteConfirmation() {
+			return confirm('Are you sure you want to delete this film?');
+			}
+		</script>
 	</head>
 	<body>
 		<div th:replace="fragments :: header"></div>
@@ -13,7 +19,7 @@
 			<h3 th:text="${film.title}"></h3>
 			<h4 th:text="${film.year}"></h4>
 			<h4 th:text="${film.director}"></h4>
-			<div th:each="actor : ${film.actors}">
+			<div class="actors" th:each="actor : ${film.actors}">
 				<h6 th:text="${actor.name}"></h6>
 			</div>
 			<img th:src="*{'data:image/jpeg;base64,'+ film.base64Encoded}" width="100" height="150" alt="Film cover alt"/>
@@ -22,7 +28,7 @@
 		<form th:action="@{/films/removeFilm/}+${film.id}" method="post" action="#">
 			<input type="hidden" name="_method" value="delete"/>
 			<input type="hidden" th:csrf="${_csrf.token}"/>
-			<input id="remove" type="submit" value="Delete this film" />
+			<input id="remove" type="submit" value="Delete this film" onclick="return deleteConfirmation();"/>
 		</form>
 		<a th:href="@{/films/showUpdateForm/}+${film.id}">
 			<button type="button">Update film details</button>

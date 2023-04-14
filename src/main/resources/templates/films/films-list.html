@@ -14,13 +14,15 @@
 		<div class="outer_container">
 			<div th:replace="fragments :: navbar"></div>
 			<div sec:authorize="hasRole('ROLE_ADMIN')" id="authorized">
-				<a th:href="@{/films/showAddFilmForm}">Add new film</a>
+				<a th:href="@{/films/showAddFilmForm}"><img src="/images/add.png" alt="Add Film"/></a>
 			</div>
 			<div class = "custom_box">
-				<div id="searchBar"> <!-- TODO - Add form for search, create action in controller -->
-					<label for="Search">Find movie: </label>
-					<input id="searchInput" type="text" placeholder="Find movie...">
-					<button type="submit">Search</button>
+				<div id="searchBar">
+					<form action="#" th:action="@{/films/filterFilms}" method="GET">
+						<label for="searchInput">Find movie: </label>
+						<input id="searchInput" type="text" name="filmName" placeholder="Find movie...">
+						<button type="submit">Search</button>		
+					</form>
 				</div>
 				<div th:each="film : ${films}" class="custom-card">
 					<a th:href="@{/films/filmDetail/}+${film.id}"><img th:src="*{'data:image/jpeg;base64,'+ film.base64Encoded}" alt="Film cover alt"/></a>

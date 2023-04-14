@@ -5,7 +5,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,12 +16,15 @@ import cz.mvsoft.entity.entertainment.GameStudio;
 @Service
 public class GamesService implements BaseService<Game> {
 	
-	@Autowired
 	private GameDao gameDao;
-	
-	@Autowired
 	private DeveloperDao developerDao;
 	
+	//single constructor, we can omit the @Autowired annotation
+	public GamesService(GameDao gameDao, DeveloperDao developerDao) {
+		this.gameDao = gameDao;
+		this.developerDao = developerDao;
+	}
+
 	@Override
 	public List<Game> findAll() {
 		List<Game> foundGames = gameDao.findAllByOrderByTitleAsc();
@@ -37,6 +39,7 @@ public class GamesService implements BaseService<Game> {
 		Optional<Game> foundGame = gameDao.findById(theId);
 		if (foundGame.isPresent()) {
 			foundGame.get().setBase64Encoded(Base64.getEncoder().encodeToString(foundGame.get().getImage()));
+			foundGame.get().setTypedStudio(foundGame.get().getDeveloper().getName());
 			return foundGame.get();
 		} else {
 			return null;
@@ -71,6 +74,15 @@ public class GamesService implements BaseService<Game> {
 			return foundGame.get();
 		}
 		return null;
+	}
+	
+	@Override
+	public List<Game> filter(String gameName) {
+		List<Game> filteredGames = gameDao.filterByName(gameName);
+		for (Game game : filteredGames) {
+			game.setBase64Encoded(Base64.getEncoder().encodeToString(game.getImage()));
+		}
+		return filteredGames;
 	}
 	
 	private GameStudio findOrCreateDeveloper(String name) {

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +29,12 @@ public class GamesController {
 
 	private static final String ADD_GAME_FORM = "games/add-game-form";
 	
-	@Autowired
 	private GamesService gamesService;
 	
+	public GamesController(GamesService gamesService) {
+		this.gamesService = gamesService;
+	}
+
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
@@ -53,6 +55,13 @@ public class GamesController {
 		return ADD_GAME_FORM;
 	}
 	
+	@GetMapping("/showUpdateForm/{id}")
+	public String showUpdateForm(@PathVariable("id") int id, Model model) {
+		Game gameToUpdate = gamesService.findById(id);
+		model.addAttribute("game",gameToUpdate);
+		return ADD_GAME_FORM;
+	}
+	
 	@GetMapping("/gameDetail/{id}")
 	public String showGameDetail(@PathVariable("id") int id, Model model) {
 		Game foundGame = gamesService.findById(id);
@@ -64,7 +73,7 @@ public class GamesController {
 	public String processGameAddition(@Valid @ModelAttribute("game") Game game, BindingResult result, Model model, @RequestParam("imageFile") MultipartFile imageFile) {
 		log.info("Processing new game "+game.getTitle());
 		
-		System.out.println(game.toString());
+		log.info(game.toString());
 		
 		if (result.hasErrors())
 			return ADD_GAME_FORM;
@@ -86,5 +95,15 @@ public class GamesController {
 	public String removeGame(@PathVariable("id") int id) {
 		gamesService.deleteById(id);
 		return "redirect:/games/list";
+	}
+	
+	@GetMapping("/filterGames")
+	public String searchForGame(@RequestParam(required = false) String gameName, Model theModel) {
+		if (gameName == null || gameName.isBlank()) {
+			return "redirect:/games/list";
+		}
+		List<Game> filteredGames = gamesService.filter(gameName);
+		theModel.addAttribute("games",filteredGames);
+		return "games/games-list";
 	}
 }

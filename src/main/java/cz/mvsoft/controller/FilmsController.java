@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +29,12 @@ public class FilmsController {
 	
 	private static final String ADD_FILM_FORM = "films/add-film-form";
 
-	@Autowired
 	private FilmsService filmService;
 	
+	public FilmsController(FilmsService filmService) {
+		this.filmService = filmService;
+	}
+
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
@@ -101,5 +103,15 @@ public class FilmsController {
 	public String removeFilmProcessing(@PathVariable("id") int id) {
 		filmService.deleteById(id);
 		return "redirect:/films/list";
+	}
+	
+	@GetMapping("/filterFilms")
+	public String searchForFilm(@RequestParam(required=false) String filmName, Model theModel) {
+		if (filmName == null || filmName.isBlank()) {
+			return "redirect:/films/list";
+		}
+		List<Film> filteredFilms = filmService.filter(filmName);
+		theModel.addAttribute("films",filteredFilms);
+		return "films/films-list";
 	}
 }

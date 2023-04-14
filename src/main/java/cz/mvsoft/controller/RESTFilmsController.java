@@ -2,7 +2,6 @@ package cz.mvsoft.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,9 +20,12 @@ import cz.mvsoft.service.FilmsService;
 @RequestMapping("/api")
 public class RESTFilmsController {
 	
-	@Autowired
 	private FilmsService filmsService;
 	
+	public RESTFilmsController(FilmsService filmsService) {
+		this.filmsService = filmsService;
+	}
+
 	@GetMapping(path = "/films", produces = "application/json")
 	public ResponseEntity<List<Film>> findFilms(){
 		List<Film> films = filmsService.findAll();

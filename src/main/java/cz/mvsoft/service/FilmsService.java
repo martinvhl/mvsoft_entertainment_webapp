@@ -1,6 +1,7 @@
 package cz.mvsoft.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,12 +21,14 @@ import cz.mvsoft.entity.entertainment.Film;
 @Service
 public class FilmsService implements BaseService<Film> {
 
-	@Autowired
 	private FilmDao filmDao;
-	
-	@Autowired
 	private ActorDao actorDao;
 	
+	public FilmsService(FilmDao filmDao, ActorDao actorDao) {
+		this.filmDao = filmDao;
+		this.actorDao = actorDao;
+	}
+
 	@Override
 	public List<Film> findAll() {
 		List<Film> foundFilms = filmDao.findAllByOrderByTitleAsc();
@@ -39,41 +41,42 @@ public class FilmsService implements BaseService<Film> {
 	@Override
 	public Film findById(int theId) {
 		Optional<Film> foundFilm = filmDao.findById(theId);
-		if (foundFilm.isPresent()) {
-			foundFilm.get().setBase64Encoded(Base64.getEncoder().encodeToString(foundFilm.get().getImage()));
-			List<Actor> foundActors = foundFilm.get().getActors();
-			StringBuilder builder = new StringBuilder();
-			for (int i = 0; i < foundActors.size(); i++) {
-				builder.append(foundActors.get(i).getName());
-				if (i < foundActors.size()-1) {
-					builder.append(", ");
-				}
-			}
-			foundFilm.get().setActorsInput(builder.toString());
-			return foundFilm.get();
-		} else {
-			return null;
-		}
+	    return foundFilm.map(film -> {
+	        film.setBase64Encoded(Base64.getEncoder().encodeToString(film.getImage()));
+	        List<Actor> foundActors = film.getActors();
+	        
+	        StringBuilder builder = new StringBuilder();
+	        for (int i = 0; i < foundActors.size(); i++) {
+	            builder.append(foundActors.get(i).getName());
+	            if (i < foundActors.size()-1) {
+	                builder.append(", ");
+	            }
+	        }
+	        film.setActorsInput(builder.toString());
+	        
+	        return film;
+	    }).orElse(null);
 	}
 
 	@Override
 	public Film save(Film film, MultipartFile imageFile) {
 		//mapping String from input to List
-		List<Actor> typedActors = Arrays.asList(film.getActorsInput().split(",")).stream()
-								.map(Actor::new)
-								.collect(Collectors.toList());
+		List<Actor> typedActors = mapActorsFromInput(film.getActorsInput());
+		
 		//checking if actors are already present in the db
 		List<Actor> actors = new ArrayList<>();
 		for (Actor actor : typedActors) {
 			actors.add(findOrCreateActor(actor.getName().trim()));
 		}
+		
 		//saving image from multipart file
-		try {
-	        byte[] imageData = imageFile.getBytes();
+		try (InputStream inputStream = imageFile.getInputStream()) {
+	        byte[] imageData = inputStream.readAllBytes();
 	        film.setImage(imageData);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+		
 		//saving film
 		film.setActors(actors);
 		if (film.getId() == 0)	
@@ -105,5 +108,19 @@ public class FilmsService implements BaseService<Film> {
 	    }
 	    return actor;
 	}
+	
+	private List<Actor> mapActorsFromInput(String filmActorsInput) {
+		return Arrays.asList(filmActorsInput.split(",")).stream()
+								.map(Actor::new)
+								.collect(Collectors.toList());
+	}
 
+	@Override
+	public List<Film> filter(String filmName) {
+		List<Film> filteredFilms = filmDao.filterByName(filmName);
+		for (Film film : filteredFilms) {
+			film.setBase64Encoded(Base64.getEncoder().encodeToString(film.getImage()));
+		}
+		return filteredFilms;
+	}
 }
