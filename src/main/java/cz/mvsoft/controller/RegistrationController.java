@@ -1,7 +1,5 @@
 package cz.mvsoft.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import cz.mvsoft.entity.users.User;
 import cz.mvsoft.service.UserService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller

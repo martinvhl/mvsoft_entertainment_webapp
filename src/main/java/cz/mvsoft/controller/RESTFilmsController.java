@@ -41,6 +41,8 @@ public class RESTFilmsController {
 		return new ResponseEntity<>(film,HttpStatus.FOUND);
 	}
 	
+	@GetMapping(path = "/films")
+	
 	@PostMapping("/films")
 	public ResponseEntity<Film> saveFilm(@RequestBody Film film) {
 		return new ResponseEntity<>(filmsService.save(film, null),HttpStatus.CREATED);

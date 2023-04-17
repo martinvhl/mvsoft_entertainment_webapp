@@ -1,8 +1,6 @@
 package cz.mvsoft.dao.securityDao;
 
 
-import javax.persistence.EntityManager;
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import cz.mvsoft.entity.users.Role;
+import jakarta.persistence.EntityManager;
 
 
 @Repository

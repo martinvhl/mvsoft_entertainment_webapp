@@ -1,13 +1,12 @@
 package cz.mvsoft.dao.securityDao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import cz.mvsoft.entity.users.User;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -18,7 +17,7 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public User findByUserName(String userName) {
-		TypedQuery<User> query = entityManager.createQuery("from User where username=:userName", User.class);
+		TypedQuery<User> query = entityManager.createQuery("from User where userName=:userName", User.class);
 		query.setParameter("userName", userName);
 		User foundUser = null;
 		try {

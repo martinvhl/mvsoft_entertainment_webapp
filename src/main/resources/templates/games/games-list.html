@@ -10,9 +10,9 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
 	</head>
 	<body>
-		<div th:replace="fragments :: header"></div>
+		<div th:replace="~{fragments :: header}"></div>
 		<div class="outer_container">
-			<div th:replace="fragments :: navbar"></div>
+			<div th:replace="~{fragments :: navbar}"></div>
 			<div sec:authorize="hasRole('ROLE_ADMIN')" id="authorized">
 				<a th:href="@{/games/showAddGameForm}"><img src="/images/add.png" alt="Add Game"/></a>
 			</div>
@@ -29,6 +29,6 @@
 				</div>
 			</div>
 		</div>
-		<div th:replace="fragments :: footer"></div>
+		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

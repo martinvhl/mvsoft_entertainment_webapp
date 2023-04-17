@@ -21,13 +21,15 @@ import cz.mvsoft.entity.users.User;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
 	private UserDao userDao;
-	
-	@Autowired
 	private RoleDao roleDao;
-	
-	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	private BCryptPasswordEncoder passwordEncoder;
+
+	public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
+		this.userDao = userDao;
+		this.roleDao = roleDao;
+		this.passwordEncoder = new BCryptPasswordEncoder();
+	}
 
 	@Override
 	@Transactional

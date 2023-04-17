@@ -96,3 +96,46 @@ time, mark, audio, video {
   width: 90%;
 }
 
+@media only screen and (max-width: 600px) {
+/* For devices with a maximum width of 600px */
+.outer_container {
+flex-wrap: wrap;
+}
+.custom_box {
+flex-direction: column;
+}
+.custom-card {
+width: 90%;
+}
+}
+
+@media only screen and (min-width: 601px) and (max-width: 900px) {
+/* For devices with a width between 601px and 900px */
+.outer_container {
+justify-content: center;
+}
+.custom-card {
+width: 30%;
+}
+}
+
+@media only screen and (min-width: 901px) and (max-width: 1200px) {
+/* For devices with a width between 901px and 1200px */
+.outer_container {
+justify-content: space-around;
+}
+.custom-card {
+width: 25%;
+}
+}
+
+@media only screen and (min-width: 1201px) {
+/* For devices with a width larger than 1201px */
+.outer_container {
+justify-content: flex-start;
+}
+.custom-card {
+width: 20%;
+}
+}
+

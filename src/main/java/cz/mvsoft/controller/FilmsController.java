@@ -2,8 +2,6 @@ package cz.mvsoft.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cz.mvsoft.entity.entertainment.Film;
 import cz.mvsoft.service.FilmsService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -54,10 +53,13 @@ public class FilmsController {
 		model.addAttribute("film",new Film());
 		return ADD_FILM_FORM; 
 	}
-	
+	//TODO Add film-detail view error!
 	@GetMapping("/filmDetail/{id}")
 	public String showFilmDetail(@PathVariable("id") int id, Model model) {
 		Film foundFilm = filmService.findById(id);
+		if (foundFilm == null) {
+			throw new RuntimeException("Film with this id is not present!");
+		}
 		model.addAttribute("film",foundFilm);
 		return "films/film-detail";
 	}

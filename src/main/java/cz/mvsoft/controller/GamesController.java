@@ -2,8 +2,6 @@ package cz.mvsoft.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cz.mvsoft.entity.entertainment.Game;
 import cz.mvsoft.service.GamesService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
