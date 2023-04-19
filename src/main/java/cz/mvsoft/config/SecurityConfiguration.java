@@ -43,8 +43,8 @@ public class SecurityConfiguration {
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeHttpRequests(authorization ->
 			authorization
-					.requestMatchers("/","/register/**").permitAll()
-					.requestMatchers("/films/list","/games/list").hasRole("BASIC")
+					.requestMatchers("/","/register/**","/api/register").permitAll()
+					.requestMatchers("/films/list","/games/list","/api/films","/api/games").hasRole("BASIC")
 					.requestMatchers("/films/showAddFilmForm","/films/addFilm","/games/showGameFilmForm","/games/addGame").hasRole("ADMIN")
 					.anyRequest().permitAll()
 					)
@@ -60,6 +60,7 @@ public class SecurityConfiguration {
 						.permitAll())
 			.logout(LogoutConfigurer::permitAll)
 			.authenticationProvider(authenticationProvider())
+			.csrf().ignoringRequestMatchers("/api/**").and() //nepoužíváme csrf pro rest api aplikace
 			.httpBasic(); //pak v Postmanu přidat user credentials do authorization (nezapomenout přepnout do Basic auth)
 	
 		return httpSecurity.build();

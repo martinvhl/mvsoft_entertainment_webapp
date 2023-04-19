@@ -12,8 +12,8 @@
 		</script>
 	</head>
 	<body>
-		<div th:replace="fragments :: header"></div>
-		<div th:replace="fragments :: navbar"></div>
+		<div th:replace="~{fragments :: header}"></div>
+		<div th:replace="~{fragments :: navbar}"></div>
 		<div class="game-box">
 			<h3 th:text="${game.title}"></h3>
 			<h4 th:text="${game.year}"></h4>
@@ -32,6 +32,6 @@
 		<hr>
 		<a th:href="@{/games/list}">Back to list...</a>
 		<br>
-		<div th:replace="fragments :: footer"></div>
+		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

@@ -5,6 +5,8 @@
 		<link rel="icon" type="image/x-icon" href="/images/user.ico">
 		<title>User Registration</title>
 		<!-- Add css link -->
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		
 	</head>
 	<body>
 		<h3>Register new user</h3>
@@ -15,7 +17,7 @@
 			</div>
 			
 			<label for="userName">Login:</label>
-	        <input type="text" id="userName" name="userName" th:field="*{userName}" placeholder="Enter your login..."/>
+	        <input type="text" id="userName" name="userName" th:field="*{userName}" placeholder="Enter your login..." autofocus="autofocus"/>
 	        <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username error</span><br/>
 	
 			<label for="firstName">First name:</label>
@@ -40,6 +42,6 @@
 		<hr>
 		<a th:href="@{/login/showLoginPage}">Back ...</a>
 		<br>
-		<div th:replace="fragments :: footer"></div>
+		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

@@ -7,12 +7,12 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
 	</head>
 	<body>
-		<div th:replace="fragments :: header"></div>
-		<div th:replace="fragments :: navbar"></div>
+		<div th:replace="~{fragments :: header}"></div>
+		<div th:replace="~{fragments :: navbar}"></div>
 		<h3>New film successfully added to the database!</h3>
 		<hr>
 		<a th:href="@{/films/list}">Continue...</a>
 		<br>
-		<div th:replace="fragments :: footer"></div>
+		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>
