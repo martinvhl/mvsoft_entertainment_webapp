@@ -53,12 +53,12 @@ public class FilmsController {
 		model.addAttribute("film",new Film());
 		return ADD_FILM_FORM; 
 	}
-	//TODO Add film-detail view error!
+	
 	@GetMapping("/filmDetail/{id}")
 	public String showFilmDetail(@PathVariable("id") int id, Model model) {
 		Film foundFilm = filmService.findById(id);
 		if (foundFilm == null) {
-			throw new RuntimeException("Film with this id is not present!");
+			return "films/film-not-found";
 		}
 		model.addAttribute("film",foundFilm);
 		return "films/film-detail";

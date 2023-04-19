@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<title>Film detail</title>
+		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/x-icon" href="/images/film.ico">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/film-detail.css}">
+	</head>
+	<body>
+		<div th:replace="~{fragments :: header}"></div>
+		<div th:replace="~{fragments :: navbar}"></div>
+		<div class="film-box">
+			<h3>Film with this id was not found!</h3>
+		</div>
+		<hr>
+		<a th:href="@{/films/list}">Back to list...</a>
+		<br>
+		<div th:replace="~{fragments :: footer}"></div>
+	</body>
+</html>
