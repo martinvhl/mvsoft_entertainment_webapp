@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cz.mvsoft.entity.entertainment.Film;
@@ -27,9 +28,11 @@ public class RESTFilmsController {
 	}
 
 	@GetMapping(path = "/films", produces = "application/json")
-	public ResponseEntity<List<Film>> findFilms(){
-		List<Film> films = filmsService.findAll();
-		return new ResponseEntity<>(films,HttpStatus.OK);
+	public ResponseEntity<List<Film>> findFilms(@RequestParam(required = false) String filmName){
+		if (filmName == null || filmName.isBlank())
+			return new ResponseEntity<>(filmsService.findAll(),HttpStatus.OK);
+		List<Film> filteredFilms = filmsService.filter(filmName);
+		return new ResponseEntity<>(filteredFilms,HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/films/{id}", produces = "application/json")
@@ -40,8 +43,6 @@ public class RESTFilmsController {
 		}
 		return new ResponseEntity<>(film,HttpStatus.FOUND);
 	}
-	
-	@GetMapping(path = "/films")
 	
 	@PostMapping("/films")
 	public ResponseEntity<Film> saveFilm(@RequestBody Film film) {
