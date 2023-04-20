@@ -1,0 +1,25 @@
+#back {
+	display:flex;
+	justify-content: center;
+}
+#back:hover {
+	cursor: pointer;
+}
+#back button {
+  background-color: rgb(240, 95, 95);
+  border: 1px solid red;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius:5px;
+}
+
+#back button:hover {
+	cursor: pointer;
+	color:black;
+	background-color: whitesmoke;
+}

@@ -9,12 +9,16 @@
 	</head>
 	<body>
 		<div th:replace="~{fragments :: header}"></div>
-		<div th:replace="~{fragments :: navbar}"></div>
-		<div class="film-box">
-			<h3>Film with this id was not found!</h3>
+		<div class="outer_container">
+			<div th:replace="~{fragments :: navbar}"></div>
+			<div class="film-box">
+				<h3 id="not_found">Film with this id was not found!</h3>
+			</div>
 		</div>
-		<hr>
-		<a th:href="@{/films/list}">Back to list...</a>
+		<span id="back">
+			<a th:href="@{/films/list}"><button type="button">Back to list...</button></a>
+		</span>
+
 		<br>
 		<div th:replace="~{fragments :: footer}"></div>
 	</body>

@@ -5,6 +5,8 @@
 		<title>Add New Film</title>
 		<link rel="icon" type="image/x-icon" href="/images/film.ico">
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/add-film.css}">
+		
 	</head>
 	<body>
 		<div th:replace="~{fragments :: header}"></div>
@@ -63,9 +65,9 @@
 		</form>
 			<img th:src="*{'data:image/jpeg;base64,'+ film.base64Encoded}" width="100" height="150" alt="Film cover alt"/>
 		
-		<hr>
-		<a th:href="@{/films/list}">Back to list...</a>
-		<br>
+		<span id="back">
+			<a th:href="@{/films/list}"><button type="button">Back to list...</button></a>
+		</span>
 		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>
