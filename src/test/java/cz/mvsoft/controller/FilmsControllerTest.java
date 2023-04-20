@@ -68,7 +68,7 @@ class FilmsControllerTest {
         Film film2 = Film.builder().id(2).title("Vetřelec").year(1978).director("Ridley Scott").length(105).build();
         films.add(film1);
         films.add(film2);
-        Pageable pageable = PageRequest.of(1,4);
+        Pageable pageable = PageRequest.of(0,4);
     	when(filmService.findAll(pageable)).thenReturn(films);
     	
         mockMvc.perform(get("/films/list"))
