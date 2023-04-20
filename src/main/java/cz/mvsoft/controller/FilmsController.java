@@ -3,6 +3,8 @@ package cz.mvsoft.controller;
 import java.util.List;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FilmsController {
 	
 	private static final String ADD_FILM_FORM = "films/add-film-form";
+	private static final String REDIRECTED = "redirect:/films/list";
 
 	private FilmsService filmService;
 	
@@ -41,9 +44,12 @@ public class FilmsController {
 	}
 	
 	@GetMapping("/list")
-	public String getAllFilms(Model theModel) {
-		List<Film> filmsInDb = filmService.findAll();
+	public String getAllFilms(Model theModel, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		List<Film> filmsInDb = filmService.findAll(pageable);
 		theModel.addAttribute("films",filmsInDb);
+//	    theModel.addAttribute("currentPage", pageTuts.getNumber() + 1);
+
 		return "films/films-list";
 	}
 	
@@ -87,7 +93,7 @@ public class FilmsController {
 		filmService.save(film, imageFile);
 		
 		if (film.getId() != 0) {
-			return "redirect:/films/list";
+			return REDIRECTED;
 		} else {
 			log.info("New film successfully added!");
 			return "films/film-addition-successful";
@@ -104,13 +110,13 @@ public class FilmsController {
 	@PostMapping("/removeFilm/{id}")
 	public String removeFilmProcessing(@PathVariable("id") int id) {
 		filmService.deleteById(id);
-		return "redirect:/films/list";
+		return REDIRECTED;
 	}
 	
 	@GetMapping("/filterFilms")
 	public String searchForFilm(@RequestParam(required=false) String filmName, Model theModel) {
 		if (filmName == null || filmName.isBlank()) {
-			return "redirect:/films/list";
+			return REDIRECTED;
 		}
 		List<Film> filteredFilms = filmService.filter(filmName);
 		theModel.addAttribute("films",filteredFilms);

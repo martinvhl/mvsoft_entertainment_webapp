@@ -3,6 +3,8 @@ package cz.mvsoft.controller;
 import java.util.List;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,8 +43,9 @@ public class GamesController {
 	}
 	
 	@GetMapping("/list")
-	public String getAllGames(Model model) {
-		List<Game> games = gamesService.findAll();
+	public String getAllGames(Model model , @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		List<Game> games = gamesService.findAll(pageable);
 		model.addAttribute("games", games);
 		return "games/games-list";
 	}

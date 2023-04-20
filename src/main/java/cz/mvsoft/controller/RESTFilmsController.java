@@ -2,6 +2,8 @@ package cz.mvsoft.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,9 +30,12 @@ public class RESTFilmsController {
 	}
 
 	@GetMapping(path = "/films", produces = "application/json")
-	public ResponseEntity<List<Film>> findFilms(@RequestParam(required = false) String filmName){
-		if (filmName == null || filmName.isBlank())
-			return new ResponseEntity<>(filmsService.findAll(),HttpStatus.OK);
+	public ResponseEntity<List<Film>> findFilms(@RequestParam(required = false) String filmName, 
+			@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size){
+		if (filmName == null || filmName.isBlank()) {
+			Pageable pageable = PageRequest.of(page, size);
+			return new ResponseEntity<>(filmsService.findAll(pageable),HttpStatus.OK);
+		}
 		List<Film> filteredFilms = filmsService.filter(filmName);
 		return new ResponseEntity<>(filteredFilms,HttpStatus.OK);
 	}

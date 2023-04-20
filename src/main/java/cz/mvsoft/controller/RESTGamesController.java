@@ -2,6 +2,8 @@ package cz.mvsoft.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cz.mvsoft.entity.entertainment.Game;
@@ -27,9 +30,14 @@ public class RESTGamesController {
 	}
 
 	@GetMapping(path = "/games", produces = "application/json")
-	public ResponseEntity<List<Game>> findGames() {
-		List<Game> games = gamesService.findAll();
-		return new ResponseEntity<>(games,HttpStatus.OK);
+	public ResponseEntity<List<Game>> findGames(@RequestParam(required = false) String gameName,
+			@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
+		if (gameName == null || gameName.isBlank()) {
+			Pageable pageable = PageRequest.of(page, size);
+			return new ResponseEntity<>(gamesService.findAll(pageable),HttpStatus.OK);
+		}
+		List<Game> filteredGames = gamesService.filter(gameName);
+		return new ResponseEntity<>(filteredGames,HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/games/{id}", produces = "application/json")

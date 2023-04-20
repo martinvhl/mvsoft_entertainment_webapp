@@ -8,8 +8,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,8 +31,11 @@ public class FilmsService implements BaseService<Film> {
 	}
 
 	@Override
-	public List<Film> findAll() {
-		List<Film> foundFilms = filmDao.findAllByOrderByTitleAsc();
+	public List<Film> findAll(Pageable pageable) {
+//		List<Film> foundFilms = filmDao.findAllByOrderByTitleAsc();
+		
+		Page<Film> pagedFilms = filmDao.findAllByOrderByTitleAsc(pageable);
+		List<Film> foundFilms = pagedFilms.getContent();
 		for (Film film : foundFilms) {
 			film.setBase64Encoded(Base64.getEncoder().encodeToString(film.getImage()));
 		}
@@ -111,8 +115,7 @@ public class FilmsService implements BaseService<Film> {
 	
 	private List<Actor> mapActorsFromInput(String filmActorsInput) {
 		return Arrays.asList(filmActorsInput.split(",")).stream()
-								.map(Actor::new)
-								.collect(Collectors.toList());
+								.map(Actor::new).toList();
 	}
 
 	@Override

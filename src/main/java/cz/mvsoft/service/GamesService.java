@@ -5,11 +5,14 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cz.mvsoft.dao.entertainmentDao.DeveloperDao;
 import cz.mvsoft.dao.entertainmentDao.GameDao;
+import cz.mvsoft.entity.entertainment.Film;
 import cz.mvsoft.entity.entertainment.Game;
 import cz.mvsoft.entity.entertainment.GameStudio;
 
@@ -26,8 +29,9 @@ public class GamesService implements BaseService<Game> {
 	}
 
 	@Override
-	public List<Game> findAll() {
-		List<Game> foundGames = gameDao.findAllByOrderByTitleAsc();
+	public List<Game> findAll(Pageable pageable) {
+		Page<Game> pagedGames = gameDao.findAllByOrderByTitleAsc(pageable);
+		List<Game> foundGames = pagedGames.getContent();
 		for (Game game : foundGames) {
 			game.setBase64Encoded(Base64.getEncoder().encodeToString(game.getImage()));
 		}

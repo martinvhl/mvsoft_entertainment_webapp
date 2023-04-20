@@ -23,6 +23,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -66,7 +68,8 @@ class FilmsControllerTest {
         Film film2 = Film.builder().id(2).title("Vetřelec").year(1978).director("Ridley Scott").length(105).build();
         films.add(film1);
         films.add(film2);
-    	when(filmService.findAll()).thenReturn(films);
+        Pageable pageable = PageRequest.of(1,4);
+    	when(filmService.findAll(pageable)).thenReturn(films);
     	
         mockMvc.perform(get("/films/list"))
             .andExpect(status().isOk())
@@ -74,7 +77,7 @@ class FilmsControllerTest {
             .andExpect(model().attribute("films", hasSize(2)))
             .andExpect(model().attribute("films",equalTo(films)));
 
-        verify(filmService, times(1)).findAll();
+        verify(filmService, times(1)).findAll(pageable);
         verifyNoMoreInteractions(filmService);
     }
     
