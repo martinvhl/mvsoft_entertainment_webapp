@@ -1,24 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-	  lang="en">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-		<title>Entertainment hub</title>
+		<title>Welcome</title>
 		<link rel="icon" type="image/x-icon" href="/images/home.ico">
 		<link rel="stylesheet" type="text/css" href="css/homepage_style.css">
 	</head>
 	<body>
-		<header>This will be a header for our page!</header>
-		<h1>This is a placeholder for future homepage</h1><hr>
-		<div>
-			<a href="/login/showLoginPage" class="login-btn">Login here</a>
+		<header>
+			<ul>
+				<li>About Me</li>
+				<a href="https://www.linkedin.com/in/martin-vahala-272bb126a/"><li>LinkedIn</li></a>
+				<a href="https://github.com/martinvhl"><li>Source Code</li></a>
+				<a href="/login/showLoginPage"><li>To App</li></a>
+			</ul>
+		</header>
+		<div class="container">
+			<article>
+				<div class="main">
+
+				</div>
+			</article>
+
+			<aside>
+				<div class="sidebar">
+					<h5>Contact me:</h5>
+					<ul>
+						<li><h6>Email:</h6></li>
+						<li>MartinVahala@seznam.cz</li>
+						<li><h6>Phone:</h6></li>
+						<li>+420 735 525 415</li>
+					</ul>
+					<h6>Write me a message:</h6>
+					<div>
+						<form>
+							<label>Your name:</label>
+							<input type="text" placeholder="Your name..."><br>
+							<label for="message">Your message:</label>
+							<textarea name="message" placeholder="New message..."></textarea>
+							<button type="submit">Send</button>
+						</form>
+					</div>					
+				</div>
+			</aside>
 		</div>
-		<div>
-			<a href="/register/showRegistrationForm" class="register-btn">Create account</a>
-		</div>
+		
 		<footer>
-			<p>This is a placeholder for future footer. MVSoft @2023</p>
+			<span class="footer_box">
+				<a href="https://www.linkedin.com/in/martin-vahala-272bb126a/"><img src="/images/linkedin.png" alt="LinkedIn Logo"/></a>
+				<p>Martin Vahala, 2023</p>
+			</span>
 		</footer>
 	</body>
 </html>
