@@ -1,24 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
+	  lang="en">
 	<head>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 		<title>Welcome</title>
 		<link rel="icon" type="image/x-icon" href="/images/home.ico">
 		<link rel="stylesheet" type="text/css" href="css/homepage_style.css">
+		<script src="https://smtpjs.com/v3/smtp.js" type="text/javascript" defer="defer"></script>
+		<script type="text/javascript">
+			const sendEmail = () => {
+				Email.send({
+					SecureToken: "0fa8f003-d1cc-49f6-8372-7a5ebaf293ac",
+				    To : "MartinVahala@seznam.cz",
+				    From : "thorzard@gmail.com",
+				    Subject : document.getElementById("subject").value,
+				    Body : "Nová zpráva z aplikace!!!!<br>Zpráva přijata z : "+document.getElementById("email").value 
+				    	+"<br>Předmět: "+ document.getElementById("subject").value
+				    	+"<br>Zpráva: "+ document.getElementById("message").value //Zpráva undefined -> vyřešit
+				}).then(
+				  message => alert("Email úspěšně odeslán. Děkuji")
+				);
+			}
+		</script>
 	</head>
 	<body>
 		<header>
 			<ul>
-				<li>About Me</li>
 				<a href="https://www.linkedin.com/in/martin-vahala-272bb126a/"><li>LinkedIn</li></a>
 				<a href="https://github.com/martinvhl"><li>Source Code</li></a>
-				<a href="/login/showLoginPage"><li>To App</li></a>
+				<a href="/films/list"><li>To App</li></a>
 			</ul>
 		</header>
 		<div class="container">
 			<article>
 				<div class="main">
-
+					
 				</div>
 			</article>
 
@@ -31,14 +48,15 @@
 						<li><h6>Phone:</h6></li>
 						<li>+420 735 525 415</li>
 					</ul>
-					<h6>Write me a message:</h6>
-					<div>
-						<form>
-							<label>Your name:</label>
-							<input type="text" placeholder="Your name..."><br>
-							<label for="message">Your message:</label>
-							<textarea name="message" placeholder="New message..."></textarea>
-							<button type="submit">Send</button>
+					<div class="contact_form">
+						<h6>Write me a message:</h6>
+						<form onsubmit="sendEmail(); reset(); return false;">
+							<ul id="message">
+								<li><input type="text" placeholder="Your e-mail..." id="email" required="required"></li>
+								<li><input type="text" placeholder="Subject" id="subject" required="required"></li>
+								<li><textarea name="message" placeholder="Your message..." cols="40" rows="10" id="message" required="required"></textarea></li>
+								<li><button type="submit">Send</button></li>
+							</ul>
 						</form>
 					</div>					
 				</div>

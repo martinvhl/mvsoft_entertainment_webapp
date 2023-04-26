@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
 	  lang="en">
 	<head>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +8,7 @@
 		<title>Welcome to the world of films</title>
 		<link rel="stylesheet" type="text/css" th:href="@{/css/list_style.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 	</head>
 	<body>
 		<div th:replace="~{fragments :: header}"></div>
@@ -29,6 +30,34 @@
 				</div>
 			</div>
 		</div>
+		<!--  
+		    <nav aria-label="Pagination" th:if="${totalPages > 0}">
+		      <ul class="pagination justify-content-center">
+		        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+		          <a th:replace="fragments/paging :: paging(1, '<<', 'First Page')"></a>
+		        </li>
+		        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+		          <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
+		        </li>
+		        <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+		          <a class="page-link" href="#">...</a>
+		        </li>
+		        <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+		          th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+		          <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
+		        </li>
+		        <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+		          <a class="page-link" href="#">...</a>
+		        </li>
+		        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+		          <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
+		        </li>
+		        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+		          <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+		        </li>
+		      </ul>
+		    </nav> -->
+  
 		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

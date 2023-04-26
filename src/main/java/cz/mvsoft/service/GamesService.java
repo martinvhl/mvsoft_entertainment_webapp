@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cz.mvsoft.dao.entertainmentDao.DeveloperDao;
 import cz.mvsoft.dao.entertainmentDao.GameDao;
-import cz.mvsoft.entity.entertainment.Film;
 import cz.mvsoft.entity.entertainment.Game;
 import cz.mvsoft.entity.entertainment.GameStudio;
 

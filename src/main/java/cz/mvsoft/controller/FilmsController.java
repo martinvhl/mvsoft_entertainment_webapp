@@ -48,8 +48,12 @@ public class FilmsController {
 		Pageable pageable = PageRequest.of(page, size);
 		List<Film> filmsInDb = filmService.findAll(pageable);
 		theModel.addAttribute("films",filmsInDb);
-//	    theModel.addAttribute("currentPage", pageTuts.getNumber() + 1);
-
+		
+		theModel.addAttribute("currentPage",1);
+		theModel.addAttribute("totalItems", 300);
+	    theModel.addAttribute("totalPages", 12);
+	    theModel.addAttribute("pageSize", size);
+	    
 		return "films/films-list";
 	}
 	
