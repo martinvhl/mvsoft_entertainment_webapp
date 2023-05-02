@@ -17,7 +17,7 @@
 				    Subject : document.getElementById("subject").value,
 				    Body : "Nová zpráva z aplikace!!!!<br>Zpráva přijata z : "+document.getElementById("email").value 
 				    	+"<br>Předmět: "+ document.getElementById("subject").value
-				    	+"<br>Zpráva: "+ document.getElementById("message").value //Zpráva undefined -> vyřešit
+				    	+"<br>Zpráva: "+ document.getElementById("email_body").value
 				}).then(
 				  message => alert("Email úspěšně odeslán. Děkuji")
 				);
@@ -34,7 +34,7 @@
 		</header>
 		<div class="container">
 			<article>
-				<div class="main">
+				<div class="main"> <!-- vytvořit životopis, následně uložit jako obrázek do <img> -->
 					
 				</div>
 			</article>
@@ -54,7 +54,7 @@
 							<ul id="message">
 								<li><input type="text" placeholder="Your e-mail..." id="email" required="required"></li>
 								<li><input type="text" placeholder="Subject" id="subject" required="required"></li>
-								<li><textarea name="message" placeholder="Your message..." cols="40" rows="10" id="message" required="required"></textarea></li>
+								<li><textarea name="message" placeholder="Your message..." cols="40" rows="10" id="email_body" required="required"></textarea></li>
 								<li><button type="submit">Send</button></li>
 							</ul>
 						</form>

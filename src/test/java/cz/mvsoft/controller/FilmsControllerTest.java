@@ -16,7 +16,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -31,6 +34,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -94,17 +100,32 @@ class FilmsControllerTest {
     @Test
     @DisplayName("testing showFilmDetail - successfully found")
     void testShowFilmDetailSuccessful() throws Exception {
-        Film film1 = Film.builder().id(1).title("Avatar").year(2009).director("James Cameron").length(180).build();
+        List<Film> films = new ArrayList<>();
+    	Film film1 = Film.builder().id(1).title("Avatar").year(2009).director("James Cameron").length(180).build();
+    	films.add(film1);
 
+        String username = "thorzard";
+        
+        Authentication auth = Mockito.mock(Authentication.class);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    	
+        Mockito.when(securityContext.getAuthentication()).thenReturn(auth);
+        Mockito.when(auth.getName()).thenReturn(username);
+        SecurityContextHolder.setContext(securityContext);
+        
     	when(filmService.findById(1)).thenReturn(film1);
+    	when(filmService.isFavourite(film1, username)).thenReturn(true);
     	
     	mockMvc.perform(get("/films/filmDetail/1"))
     		.andExpect(status().isOk())
     		.andExpect(view().name("films/film-detail"))
     		.andExpect(model().attributeExists("film"))
-    		.andExpect(model().attribute("film",equalTo(film1)));
+    		.andExpect(model().attribute("film",equalTo(film1)))
+    		.andExpect(model().attributeExists("isFavourite"))
+    		.andExpect(model().attribute("isFavourite", true));
     	
     	verify(filmService, times(1)).findById(1);
+    	verify(filmService,times(1)).isFavourite(film1,username);
         verifyNoMoreInteractions(filmService);
     }
     
@@ -180,7 +201,7 @@ class FilmsControllerTest {
     
     @Test
     @DisplayName("testing processFilmAddition - errors present")
-    void processFilmAdditionWithErrors() throws Exception {
+    void testProcessFilmAdditionWithErrors() throws Exception {
     	Film film = Film.builder().id(1).title("").year(2009).director("James Cameron").description("Avatar movie description").filmType("scifi").length(180).build();
     	
         MockMultipartFile file = new MockMultipartFile("imageFile", "test.jpg", "image/jpeg", "test image content".getBytes());
@@ -199,7 +220,7 @@ class FilmsControllerTest {
     
     @Test
     @DisplayName("testing processFilmAddition - film already exists")
-    void processFilmAdditionFilmExists() throws Exception {
+    void testProcessFilmAdditionFilmExists() throws Exception {
     	Film film = Film.builder().title("Avatar").year(2009).director("James Cameron").description("Avatar movie description").filmType("scifi").length(180).build();
         Film foundFilm = Film.builder().id(13).title("Avatar").year(2009).director("James Cameron").description("Avatar movie description").filmType("scifi").length(180).build();
     	MockMultipartFile file = new MockMultipartFile("imageFile", "test.jpg", "image/jpeg", "test image content".getBytes());
@@ -220,7 +241,7 @@ class FilmsControllerTest {
     
     @Test
     @DisplayName("testing processFilmAddition - film successfully added")
-    void processFilmAdditionSuccessful() throws Exception {
+    void testProcessFilmAdditionSuccessful() throws Exception {
     	Film film = Film.builder().title("Avatar").year(2009).director("James Cameron").description("Avatar movie description").filmType("scifi").length(180).build();
     	MockMultipartFile file = new MockMultipartFile("imageFile", "test.jpg", "image/jpeg", "test image content".getBytes());
     	
@@ -236,5 +257,56 @@ class FilmsControllerTest {
     	verify(filmService,times(1)).searchByTitle(film.getTitle());
     	verify(filmService,times(1)).save(film, file);
     	verifyNoMoreInteractions(filmService);
+    }
+    
+    @Test
+    @DisplayName("testing getFavouriteFilms success")
+    void testGetFavouriteFilmsSuccessful() throws Exception {
+    	Set<Film> films = new HashSet<>();
+    	Film film1 = Film.builder().id(1).title("Avatar").year(2009).director("James Cameron").length(180).build();
+        Film film2 = Film.builder().id(2).title("Vetřelec").year(1978).director("Ridley Scott").length(105).build();
+    	films.add(film1);
+    	films.add(film2);
+    	String username = "thorzard";
+    	
+    	Page<Film> page = new PageImpl<>(List.copyOf(films));
+    	
+    	Authentication auth = Mockito.mock(Authentication.class);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    	
+        Mockito.when(securityContext.getAuthentication()).thenReturn(auth);
+        Mockito.when(auth.getName()).thenReturn(username);
+        SecurityContextHolder.setContext(securityContext);
+    	when(filmService.getFavourites(username,PageRequest.of(0, 8))).thenReturn(Set.copyOf(page.getContent()));
+    	
+    	mockMvc.perform(get("/films/favourite/{username}",username))
+        .andExpect(status().isOk())
+        .andExpect(view().name("films/films-list"))
+        .andExpect(model().attribute("films", hasSize(2)))
+        .andExpect(model().attribute("films",equalTo(films)));
+    	
+    	verify(filmService, times(1)).getFavourites("thorzard", PageRequest.of(0, 8));
+        verifyNoMoreInteractions(filmService);
+    }
+    
+    @Test
+    @DisplayName("testing getFavouriteFilms denied")
+    void testGetFavouriteFilmsAccessDenied() throws Exception {
+    	String loggedUsername = "thorzard";
+    	String username = "gordon11";
+    	    	
+    	Authentication auth = Mockito.mock(Authentication.class);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        
+        Mockito.when(securityContext.getAuthentication()).thenReturn(auth);
+        Mockito.when(auth.getName()).thenReturn(loggedUsername);
+        SecurityContextHolder.setContext(securityContext);
+
+        mockMvc.perform(get("/films/favourite/{username}",username))
+        	.andExpect(status().isOk())
+        	.andExpect(model().size(0))
+        	.andExpect(view().name("access-denied"));
+        
+        verifyNoInteractions(filmService);
     }
 }

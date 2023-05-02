@@ -5,12 +5,13 @@
 		<link rel="icon" type="image/x-icon" href="/images/user.ico">
 		<title>Registration successful</title>
 		<!-- Add css link -->
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
 	</head>
 	<body>
 		<h3>User successfully registered!</h3>
 		<hr>
 		<a th:href="@{/login/showLoginPage}">Login with new user</a>
 		<br>
-		<div th:replace="fragments :: footer"></div>
+		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

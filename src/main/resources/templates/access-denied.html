@@ -5,11 +5,13 @@
 		<link rel="icon" type="image/x-icon" href="/images/denied.png">
 		<title>Access Denied!</title>
 		<!-- Add css link -->
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		
 	</head>
 	<body>
-		<div th:replace="fragments :: header"></div>
-		<div th:replace="fragments :: navbar"></div>
+		<div th:replace="~{fragments :: header}"></div>
+		<div th:replace="~{fragments :: navbar}"></div>
 		<h1>Access DENIED!</h1>
-		<div th:replace="fragments :: footer"></div>
+		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

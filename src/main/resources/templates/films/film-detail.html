@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" 
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
+	  lang="en">
 	<head>
 		<title>Film detail</title>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
@@ -26,14 +28,23 @@
 				<img th:src="*{'data:image/jpeg;base64,'+ film.base64Encoded}" width="100" height="150" alt="Film cover alt"/>
 			</div>
 			<hr>
-			<form th:action="@{/films/removeFilm/}+${film.id}" method="post" action="#">
-				<input type="hidden" name="_method" value="delete"/>
-				<input type="hidden" th:csrf="${_csrf.token}"/>
-				<input id="remove" type="submit" value="Delete this film" onclick="return deleteConfirmation();"/>
-			</form>
-			<a th:href="@{/films/showUpdateForm/}+${film.id}">
-				<button type="button">Update film details</button>
-			</a>
+			<div sec:authorize="hasRole('ROLE_ADMIN')">
+				<form th:action="@{/films/removeFilm/}+${film.id}" method="post" action="#">
+					<input type="hidden" name="_method" value="delete"/>
+					<input type="hidden" th:csrf="${_csrf.token}"/>
+					<input id="remove" type="submit" value="Delete this film" onclick="return deleteConfirmation();"/>
+				</form>
+				<a th:href="@{/films/showUpdateForm/}+${film.id}">
+					<button type="button">Update film details</button>
+				</a>
+			</div>
+			
+			<div class="favourite" th:if="${#bools.isFalse(isFavourite)}">
+				<a th:href="@{/films/addToFavourites/}+${film.id}"><button type="button">Add to favourites</button></a>
+			</div>
+			<div class="favourite" th:if="${#bools.isTrue(isFavourite)}">
+				<a th:href="@{/films/removeFromFavourites/}+${film.id}"><button type="button">Remove from favourites</button></a>
+			</div>
 			<hr>
 		</div>
 		<span id="back">
