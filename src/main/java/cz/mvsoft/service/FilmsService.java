@@ -6,8 +6,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,29 +19,30 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cz.mvsoft.dao.entertainmentDao.ActorDao;
 import cz.mvsoft.dao.entertainmentDao.FilmDao;
+import cz.mvsoft.dao.entertainmentDao.OwnerDao;
 import cz.mvsoft.entity.entertainment.Actor;
 import cz.mvsoft.entity.entertainment.Film;
+import cz.mvsoft.entity.entertainment.Owner;
 
 @Service
 public class FilmsService implements BaseService<Film> {
 
 	private FilmDao filmDao;
 	private ActorDao actorDao;
+	private OwnerDao ownerDao;
 	
-	public FilmsService(FilmDao filmDao, ActorDao actorDao) {
+	public FilmsService(FilmDao filmDao, ActorDao actorDao, OwnerDao ownerDao) {
 		this.filmDao = filmDao;
 		this.actorDao = actorDao;
+		this.ownerDao = ownerDao;
 	}
 
 	@Override
 	public List<Film> findAll(Pageable pageable) {
-//		List<Film> foundFilms = filmDao.findAllByOrderByTitleAsc();
 		
 		Page<Film> pagedFilms = filmDao.findAllByOrderByTitleAsc(pageable);
 		List<Film> foundFilms = pagedFilms.getContent();
-		for (Film film : foundFilms) {
-			film.setBase64Encoded(Base64.getEncoder().encodeToString(film.getImage()));
-		}
+		encodeFilm(foundFilms);
 		return foundFilms;
 	}
 
@@ -104,6 +108,45 @@ public class FilmsService implements BaseService<Film> {
 		return null;
 	}
 	
+	@Override
+	public List<Film> filter(String filmName) {
+		List<Film> filteredFilms = filmDao.filterByName(filmName);
+		encodeFilm(filteredFilms);
+		return filteredFilms;
+	}
+	
+	@Override
+	public Set<Film> getFavourites(String username, Pageable pageable) {
+		Owner owner = ownerDao.findFilmOwnerByUsername(username);
+		encodeFilm(owner.getOwnedFilms());
+		return owner.getOwnedFilms();
+	}
+
+	@Override
+	public void addToFavourites(int filmId, String username) {
+		Owner owner = ownerDao.findFilmOwnerByUsername(username);
+		Optional<Film> foundFilm = filmDao.findById(filmId);
+		if (foundFilm.isPresent()) {
+			owner.getOwnedFilms().add(foundFilm.get());
+		}
+		ownerDao.save(owner);
+	}
+	
+	@Override
+	public void removeFromFavourites(int id, String username) {
+		Owner owner = ownerDao.findFilmOwnerByUsername(username);
+		Set<Film> films = owner.getOwnedFilms();
+		Iterator<Film> iter = films.iterator();
+		while (iter.hasNext()) {
+			Film currFilm = iter.next();
+			if (currFilm.getId() == id) {
+				iter.remove();
+				break;
+			}
+		}
+		ownerDao.save(owner);
+	}
+
 	private Actor findOrCreateActor(String name) {
 	    Actor actor = actorDao.findByName(name);
 	    if (actor == null) {
@@ -117,13 +160,16 @@ public class FilmsService implements BaseService<Film> {
 		return Arrays.asList(filmActorsInput.split(",")).stream()
 								.map(Actor::new).toList();
 	}
-
-	@Override
-	public List<Film> filter(String filmName) {
-		List<Film> filteredFilms = filmDao.filterByName(filmName);
-		for (Film film : filteredFilms) {
+	
+	private void encodeFilm(Collection<Film> foundFilms) {
+		for (Film film : foundFilms) {
 			film.setBase64Encoded(Base64.getEncoder().encodeToString(film.getImage()));
 		}
-		return filteredFilms;
+	}
+
+	public boolean isFavourite(Film film, String user) {
+		Set<Film> favouriteFilms = getFavourites(user, null);
+		boolean favourite = favouriteFilms.stream().anyMatch(e -> e.getTitle().equals(film.getTitle()));
+		return favourite;
 	}
 }

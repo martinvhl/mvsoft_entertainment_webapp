@@ -1,10 +1,9 @@
 package cz.mvsoft.controller;
 
-import java.util.List;
-
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,8 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/films")
 public class FilmsController {
 	
+	private static final String LIST = "films/films-list";
 	private static final String ADD_FILM_FORM = "films/add-film-form";
 	private static final String REDIRECTED = "redirect:/films/list";
+	private static final String FILMS_ATTRIBUTE = "films";
 
 	private FilmsService filmService;
 	
@@ -45,16 +46,25 @@ public class FilmsController {
 	
 	@GetMapping("/list")
 	public String getAllFilms(Model theModel, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		List<Film> filmsInDb = filmService.findAll(pageable);
-		theModel.addAttribute("films",filmsInDb);
+		theModel.addAttribute(FILMS_ATTRIBUTE,filmService.findAll(PageRequest.of(page, size)));
 		
 		theModel.addAttribute("currentPage",1);
 		theModel.addAttribute("totalItems", 300);
 	    theModel.addAttribute("totalPages", 12);
 	    theModel.addAttribute("pageSize", size);
 	    
-		return "films/films-list";
+		return LIST;
+	}
+	
+	@GetMapping("/favourite/{username}")
+	public String getFavouriteFilms(Model theModel, @PathVariable(name = "username") String username, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+		Pageable pageable = PageRequest.of(page,size);
+		if (username.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+			theModel.addAttribute(FILMS_ATTRIBUTE,filmService.getFavourites(username,pageable));
+			return LIST;
+		} else {
+			return "access-denied";
+		}
 	}
 	
 	@GetMapping("/showAddFilmForm")
@@ -71,6 +81,7 @@ public class FilmsController {
 			return "films/film-not-found";
 		}
 		model.addAttribute("film",foundFilm);
+		model.addAttribute("isFavourite",filmService.isFavourite(foundFilm,SecurityContextHolder.getContext().getAuthentication().getName()));
 		return "films/film-detail";
 	}
 	
@@ -84,14 +95,11 @@ public class FilmsController {
 		//check if film is already present in db
 		if (film.getId() != 0) {
 			filmService.save(film, imageFile);
-		} else {
-			Film existingFilm = filmService.searchByTitle(film.getTitle());
-			if (existingFilm != null) {
-				model.addAttribute("film", new Film());
-				model.addAttribute("filmExistsError", "This film is already in the database!");
-				log.warn(String.format("Film with title %s is already in the database!", film.getTitle()));
-				return ADD_FILM_FORM;
-			}
+		} else if (filmService.searchByTitle(film.getTitle()) != null) {
+			model.addAttribute("film", new Film());
+			model.addAttribute("filmExistsError", "This film is already in the database!");
+			log.warn(String.format("Film with title %s is already in the database!", film.getTitle()));
+			return ADD_FILM_FORM;
 		}
 		//saving film
 		filmService.save(film, imageFile);
@@ -104,10 +112,21 @@ public class FilmsController {
 		}
 	}
 	
+	@GetMapping("/addToFavourites/{id}")
+	public String addToFavourite(@PathVariable(name = "id") int id) {
+		filmService.addToFavourites(id,SecurityContextHolder.getContext().getAuthentication().getName());
+		return REDIRECTED;
+	}
+	
+	@GetMapping("/removeFromFavourites/{id}")
+	public String removeFromFavourites(@PathVariable(name = "id") int id) {
+		filmService.removeFromFavourites(id, SecurityContextHolder.getContext().getAuthentication().getName());
+		return REDIRECTED;
+	}
+	
 	@GetMapping("/showUpdateForm/{id}")
 	public String showUpdateForm(@PathVariable("id") int id, Model model) {
-		Film filmToUpdate = filmService.findById(id);
-		model.addAttribute("film",filmToUpdate);
+		model.addAttribute("film",filmService.findById(id));
 		return ADD_FILM_FORM;
 	}
 	
@@ -122,8 +141,7 @@ public class FilmsController {
 		if (filmName == null || filmName.isBlank()) {
 			return REDIRECTED;
 		}
-		List<Film> filteredFilms = filmService.filter(filmName);
-		theModel.addAttribute("films",filteredFilms);
-		return "films/films-list";
+		theModel.addAttribute(FILMS_ATTRIBUTE,filmService.filter(filmName));
+		return LIST;
 	}
 }

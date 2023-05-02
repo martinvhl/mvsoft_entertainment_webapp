@@ -14,11 +14,13 @@ import cz.mvsoft.entity.entertainment.Film;
 public interface FilmDao extends JpaRepository<Film, Integer> {
 	
 	public Optional<Film> findByTitle(String title);
-	
-//	public List<Film> findAllByOrderByTitleAsc();
-	
+		
 	@Query("from Film where title like %:name%")
 	public List<Film> filterByName(@Param("name") String name);
 	
 	public Page<Film> findAllByOrderByTitleAsc(Pageable pageable);
+	
+	//favourite films for owner
+	@Query(value = "Select * from films f where f.film_id in (select film_id from users_films  where user_id in (select user_id from users u where u.name = :username))", nativeQuery = true)
+	public Page<Film> findFavouritesByUsername(Pageable pageable, @Param("username") String username);
 }
