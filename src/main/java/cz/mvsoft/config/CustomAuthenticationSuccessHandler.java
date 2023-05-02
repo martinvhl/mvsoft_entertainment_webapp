@@ -2,7 +2,6 @@ package cz.mvsoft.config;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -13,10 +12,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
-//todo change sysout to @slf4j log output
-public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+@Slf4j
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler { //běžný JakartaEE kód, non-Spring
 
     private UserService userService;
 	
@@ -28,11 +28,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
 
-		System.out.println("\n\nIn customAuthenticationSuccessHandler\n\n");
+		log.info("\n\nIn customAuthenticationSuccessHandler\n\n");
 
 		String userName = authentication.getName();
 		
-		System.out.println("userName=" + userName);
+		log.info("userName=" + userName);
 
 		User theUser = userService.findByUserName(userName);
 		

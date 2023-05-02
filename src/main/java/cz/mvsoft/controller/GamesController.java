@@ -1,10 +1,9 @@
 package cz.mvsoft.controller;
 
-import java.util.List;
-
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,8 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/games")
 public class GamesController {
-
+	
+	private static final String LIST = "games/games-list";
 	private static final String ADD_GAME_FORM = "games/add-game-form";
+	private static final String REDIRECTED = "redirect:/games/list";
+	private static final String GAMES_ATTRIBUTE = "games";
 	
 	private GamesService gamesService;
 	
@@ -44,10 +46,19 @@ public class GamesController {
 	
 	@GetMapping("/list")
 	public String getAllGames(Model model , @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+		model.addAttribute(GAMES_ATTRIBUTE, gamesService.findAll(PageRequest.of(page, size)));
+		return LIST;
+	}
+	
+	@GetMapping("/favourite/{username}")
+	public String getFavouriteGames(Model theModel, @PathVariable(name = "username") String username, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		List<Game> games = gamesService.findAll(pageable);
-		model.addAttribute("games", games);
-		return "games/games-list";
+		if (username.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+			theModel.addAttribute(GAMES_ATTRIBUTE, gamesService.getFavourites(username, pageable));
+			return LIST;
+		} else {
+			return "access-denied";
+		}
 	}
 	
 	@GetMapping("/showAddGameForm")
@@ -59,15 +70,13 @@ public class GamesController {
 	
 	@GetMapping("/showUpdateForm/{id}")
 	public String showUpdateForm(@PathVariable("id") int id, Model model) {
-		Game gameToUpdate = gamesService.findById(id);
-		model.addAttribute("game",gameToUpdate);
+		model.addAttribute("game",gamesService.findById(id));
 		return ADD_GAME_FORM;
 	}
 	
 	@GetMapping("/gameDetail/{id}")
 	public String showGameDetail(@PathVariable("id") int id, Model model) {
-		Game foundGame = gamesService.findById(id);
-		model.addAttribute("game",foundGame);
+		model.addAttribute("game",gamesService.findById(id));
 		return "games/game-detail";
 	}
 	
@@ -80,8 +89,7 @@ public class GamesController {
 		if (result.hasErrors())
 			return ADD_GAME_FORM;
 		
-		Game existingGame = gamesService.searchByTitle(game.getTitle());
-		if (existingGame != null) {
+		if (gamesService.searchByTitle(game.getTitle()) != null) {
 			model.addAttribute("game", new Game());
 			model.addAttribute("gameExistsError", "This game is already in the database!");
 			log.warn(String.format("Game with title %s is already in the database!", game.getTitle()));
@@ -93,19 +101,24 @@ public class GamesController {
 		return "games/game-addition-successful";
 	}
 	
+	@GetMapping("/addToFavourite/{id}")
+	public String addToFavourite(@PathVariable(name = "id") int id) {
+		gamesService.addToFavourites(id, SecurityContextHolder.getContext().getAuthentication().getName());
+		return REDIRECTED;
+	}
+	
 	@PostMapping("/removeGame/{id}")
 	public String removeGame(@PathVariable("id") int id) {
 		gamesService.deleteById(id);
-		return "redirect:/games/list";
+		return REDIRECTED;
 	}
 	
 	@GetMapping("/filterGames")
 	public String searchForGame(@RequestParam(required = false) String gameName, Model theModel) {
 		if (gameName == null || gameName.isBlank()) {
-			return "redirect:/games/list";
+			return REDIRECTED;
 		}
-		List<Game> filteredGames = gamesService.filter(gameName);
-		theModel.addAttribute("games",filteredGames);
-		return "games/games-list";
+		theModel.addAttribute(GAMES_ATTRIBUTE,gamesService.filter(gameName));
+		return LIST;
 	}
 }

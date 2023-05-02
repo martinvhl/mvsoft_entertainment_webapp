@@ -14,8 +14,10 @@
 		<div th:replace="~{fragments :: header}"></div>
 		<div class="outer_container">
 			<div th:replace="~{fragments :: navbar}"></div>
-			<div sec:authorize="hasRole('ROLE_ADMIN')" id="authorized">
-				<a th:href="@{/films/showAddFilmForm}"><img src="/images/add.png" alt="Add Film"/></a>
+			<div id="authorized">
+				<div sec:authorize="hasRole('ROLE_ADMIN')">
+					<a th:href="@{/films/showAddFilmForm}"><img src="/images/add.png" alt="Add Film"/></a>
+				</div>
 			</div>
 			<div class = "custom_box">
 				<div id="searchBar">

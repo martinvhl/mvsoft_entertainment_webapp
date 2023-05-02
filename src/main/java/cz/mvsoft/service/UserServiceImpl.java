@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cz.mvsoft.dao.entertainmentDao.OwnerDao;
 import cz.mvsoft.dao.securityDao.RoleDao;
 import cz.mvsoft.dao.securityDao.UserDao;
+import cz.mvsoft.entity.entertainment.Owner;
 import cz.mvsoft.entity.users.Role;
 import cz.mvsoft.entity.users.User;
 
@@ -23,11 +24,13 @@ public class UserServiceImpl implements UserService {
 
 	private UserDao userDao;
 	private RoleDao roleDao;
+	private OwnerDao ownerDao;
 	private BCryptPasswordEncoder passwordEncoder;
 
-	public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
+	public UserServiceImpl(UserDao userDao, RoleDao roleDao, OwnerDao ownerDao) {
 		this.userDao = userDao;
 		this.roleDao = roleDao;
+		this.ownerDao = ownerDao;
 		this.passwordEncoder = new BCryptPasswordEncoder();
 	}
 
@@ -44,6 +47,10 @@ public class UserServiceImpl implements UserService {
 		//todo create userEntertainmentDTO - vytvořit danou entitu pro uložení jen těch polí, která jsou potřeba do entertainment_section db
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_BASIC")));
+		//create owner from new user
+		Owner owner = new Owner();
+		owner.setUsername(user.getUserName());
+		ownerDao.save(owner);
 		return userDao.save(user);
 	}
 	

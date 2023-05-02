@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cz.mvsoft.entity.entertainment.Film;
 import cz.mvsoft.service.FilmsService;
 
+//TODO add REST support for favourites
 @RestController
 @RequestMapping("/api")
 public class RESTFilmsController {

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cz.mvsoft.entity.entertainment.Game;
 import cz.mvsoft.service.GamesService;
 
+//TODO add REST support for favourites
 @RestController
 @RequestMapping("/api")
 public class RESTGamesController {
