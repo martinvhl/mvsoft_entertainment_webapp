@@ -19,6 +19,9 @@ time, mark, audio, video {
 	font-size: 100%;
 	vertical-align: baseline;
     }
+body {
+	background: linear-gradient(180deg, red,black);
+}
 #authorized{
 	display:flex;
 	flex-direction:column;

@@ -6,6 +6,7 @@
 		<title>User Login</title>
 		<!-- link css file -->
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
 	</head>
 	<body>
 		<div class="login-box">
@@ -30,23 +31,19 @@
 						<span class="icon-box"><i class="icon-pass"></i></span>
 						<input type="password" name="password" placeholder="Enter your password..." class="form-field" >
 					</div>
-					<input type="hidden" th:csrf="${_csrf.token}"/>
-					
-					<div class="form-group">						
-						<div class="btn-box">
-							<button type="submit" class="login-btn">Login</button>
-						</div>
-					</div>
+					<input type="hidden" th:csrf="${_csrf.token}"/>	
+							
+					<button type="submit" class="login-btn">Login</button>
 				</form>
 			</div>
-			<hr>
-			<div>
+			<div id="register_button">
 				<a th:href="@{/register/showRegistrationForm}" class="register-btn" role="button" aria-pressed="true">Register New User</a>
+			</div>
+			<div id="return_button">
+				<a th:href="@{/}">Return home</a>
 			</div>
 		</div>
 		<br>
-		<a th:href="@{/}">Return home</a>
-		<br>
-		<div th:replace="~{fragments :: footer}"></div>
+		<div id="footer" th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

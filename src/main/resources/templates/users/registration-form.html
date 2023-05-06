@@ -6,42 +6,52 @@
 		<title>User Registration</title>
 		<!-- Add css link -->
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
-		
+		<link rel="stylesheet" type="text/css" th:href="@{/css/register.css}">
 	</head>
 	<body>
+	<div class="register-box">
 		<h3>Register new user</h3>
-		<form action="#" th:object=${user} th:action="@{/register/processRegistration}" method="post">
+		<form action="#" th:object=${user} th:action="@{/register/processRegistration}" method="post" class="register-form">
 			
-			<div th:if="${userExistsError}">
+			<div class="invalid-box" th:if="${userExistsError}">
 				<span th:text="${userExistsError}"></span>
 			</div>
-			
-			<label for="userName">Login:</label>
-	        <input type="text" id="userName" name="userName" th:field="*{userName}" placeholder="Enter your login..." autofocus="autofocus"/>
-	        <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username error</span><br/>
-	
-			<label for="firstName">First name:</label>
-	        <input type="text" id="firstName" name="firstName" th:field="*{firstName}" placeholder="Enter your first name..."/>
-	        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Username error</span><br/>
+			<div class="input-field">
+				<label for="userName">Login:</label>
+		        <input type="text" id="userName" name="userName" th:field="*{userName}" placeholder="Enter your login..." autofocus="autofocus"/>
+		        <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username error</span><br/>
+			</div>
+			<div class="input-field">
+				<label for="firstName">First name:</label>
+		        <input type="text" id="firstName" name="firstName" th:field="*{firstName}" placeholder="Enter your first name..."/>
+		        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Username error</span><br/>
+	        </div>
 	        
-	        <label for="lastName">Last name:</label>
-	        <input type="text" id="lastName" name="lastName" th:field="*{lastName}" placeholder="Enter your last name..."/>
-	        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Username error</span><br/>
-	
-	        <label for="password">Password:</label>
-	        <input type="password" id="password" name="password" th:field="*{password}" placeholder="Enter your password..."/>
-	        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span><br/>
-	
-	        <label for="email">Email:</label>
-	        <input type="email" id="email" name="email" th:field="*{email}" placeholder="Enter your email..."/>
-	        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span><br/>
+	        <div class="input-field">
+		        <label for="lastName">Last name:</label>
+		        <input type="text" id="lastName" name="lastName" th:field="*{lastName}" placeholder="Enter your last name..."/>
+		        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Username error</span><br/>
+			</div>
+			
+			<div class="input-field">
+		        <label for="password">Password:</label>
+		        <input type="password" id="password" name="password" th:field="*{password}" placeholder="Enter your password..."/>
+		        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span><br/>
+			</div>
+			
+			<div class="input-field">
+		        <label for="email">Email:</label>
+		        <input type="email" id="email" name="email" th:field="*{email}" placeholder="Enter your email..."/>
+		        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span><br/>
+			</div>
 			
 			<input type="hidden" th:csrf="${_csrf.token}"/>
 			<button type="submit">Register</button>
 		</form>
-		<hr>
-		<a th:href="@{/login/showLoginPage}">Back ...</a>
-		<br>
+		<div id="return_button">
+			<a th:href="@{/login/showLoginPage}">Back</a>
+		</div>
+	</div>
 		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

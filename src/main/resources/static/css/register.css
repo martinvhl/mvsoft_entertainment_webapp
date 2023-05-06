@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+body{
+	background-color: black;
+}
+.register-box {
+	display: flex;
+	flex-direction:column;
+	height:83vh;
+	justify-content: center;
+	align-items: center;
+	padding:1vh;
+	background: linear-gradient(180deg, red,black);
+}
+.register-box h3 {
+	margin-bottom:1vh;
+	font-family: 'Poppins',sans-serif;
+	font-size:1.5em;
+	font-weight:500;
+}
+.register-form {
+	display:flex;
+	flex-direction: column;
+	flex-wrap:wrap;
+	justify-content:space-between;
+	align-items: center;
+	border-bottom: 3px solid black;
+	padding-bottom:1vh;
+}
+.invalid-box {
+	border: 1px solid red;
+	background: linear-gradient(90deg, white, gray);
+	color:red;
+	font-family: 'Poppins',sans-serif;
+	font-size:1em;
+	font-weight:500;
+	padding:1vh;
+	margin-bottom:0.5 vh;
+	border-radius:10px;
+}
+.input-field {
+	display:flex;
+	flex-direction: row;
+	justify-content: center;
+	margin:1vh;
+	padding:1vh;
+	align-items: center;
+}
+.input-field label {
+	margin-right:1vh;
+	font-family: 'Poppins',sans-serif;
+	font-size:1em;
+	font-weight:500;
+	color:white;
+}
+.input-field input {
+	margin-right:1vh;
+	padding:1vh;
+	background-color: pink;
+	font-family: 'Poppins', sans-serif;
+	font-size:1em;
+	font-weight:400;
+	border-radius:10px;
+}
+.input-field span {
+	font-family: 'Poppins',sans-serif;
+	font-size:1em;
+	font-weight:500;
+	color:white;
+}
+.register-form button {
+	font-family: 'Poppins',sans-serif;
+	font-size:1em;
+	font-weight:500;
+	color:white;
+	padding:1.5vh;
+	border:1px dashed black;
+	margin-top: 0.5vh;
+	margin-bottom:1vh;
+	border-radius:10px;
+	background: none;
+}
+.register-form button:hover{
+	background-color: black;
+	color:white;
+	cursor:pointer;
+	border: 1px dashed white;
+}
+#return_button {
+	font-family: 'Poppins',sans-serif;
+	font-weight:500;
+	padding:1.5vh;
+	border:1px dashed;
+	margin-top: 0.5vh;
+	margin-bottom:1vh;
+	border-radius:10px;
+}
+#return_button a {
+	text-decoration: none;
+	color:white;
+}
+#return_button:hover{
+	background-color: black;
+	color:white;
+	cursor:pointer;
+}
