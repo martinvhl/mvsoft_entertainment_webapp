@@ -1,5 +1,7 @@
 package cz.mvsoft.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Collection;
@@ -56,15 +58,19 @@ public class GamesService implements BaseService<Game> {
 
 	@Override
 	public Game save(Game game, MultipartFile imageFile) {
+		//check if game developer already exists in db (create/find)
 		GameStudio gameStudio = findOrCreateDeveloper(game.getTypedStudio());
 		game.setDeveloper(gameStudio);
+		
 		//saving image from multipart file
-		try {
-			game.setImage(imageFile.getBytes());
-		} catch (Exception e) {
+		try (InputStream inputStream = imageFile.getInputStream()){
+			game.setImage(inputStream.readAllBytes());
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		game.setCreatedDateTime(LocalDateTime.now());
+		if (game.getId() == 0)
+			game.setCreatedDateTime(LocalDateTime.now());
+		
 		game.setLastModifiedDateTime(LocalDateTime.now());
 		gameDao.save(game);
 		return game;

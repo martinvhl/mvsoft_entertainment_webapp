@@ -38,7 +38,6 @@ public class Game extends BaseEntity {
 	private String gameType;
 	
 	@Transient
-	@NotBlank
 	private String typedStudio;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})

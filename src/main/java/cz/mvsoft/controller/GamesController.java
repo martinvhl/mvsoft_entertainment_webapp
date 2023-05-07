@@ -84,21 +84,26 @@ public class GamesController {
 	public String processGameAddition(@Valid @ModelAttribute("game") Game game, BindingResult result, Model model, @RequestParam("imageFile") MultipartFile imageFile) {
 		log.info("Processing new game "+game.getTitle());
 		
-		log.info(game.toString());
-		
 		if (result.hasErrors())
 			return ADD_GAME_FORM;
-		
-		if (gamesService.searchByTitle(game.getTitle()) != null) {
+		//check if game is already present in db
+		if (game.getId() != 0) {
+			gamesService.save(game, imageFile);
+		} else if (gamesService.searchByTitle(game.getTitle()) != null) {
 			model.addAttribute("game", new Game());
 			model.addAttribute("gameExistsError", "This game is already in the database!");
 			log.warn(String.format("Game with title %s is already in the database!", game.getTitle()));
 			return ADD_GAME_FORM;
 		}
-		
+		//saving new game
 		gamesService.save(game, imageFile);
-		log.info("Game with title "+game.getTitle()+" was successfully added to the database.");
-		return "games/game-addition-successful";
+		
+		if (game.getId() != 0) {
+			return REDIRECTED;
+		} else {
+			log.info("New game successfully added!");
+			return "games/game-addition-successful";
+		}
 	}
 	
 	@GetMapping("/addToFavourite/{id}")
