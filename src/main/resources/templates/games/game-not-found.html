@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<title>Film detail</title>
+		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/x-icon" href="/images/game.ico">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/game-detail.css}">
+	</head>
+	<body>
+		<div th:replace="~{fragments :: header}"></div>
+		<div class="outer_container">
+			<div th:replace="~{fragments :: navbar}"></div>
+			<div class="game-box">
+				<h3 id="not_found">Game with this id was not found!</h3>
+			</div>
+		</div>
+		<span id="back">
+			<a th:href="@{/games/list}"><button type="button">Back to list...</button></a>
+		</span>
+
+		<br>
+		<div th:replace="~{fragments :: footer}"></div>
+	</body>
+</html>

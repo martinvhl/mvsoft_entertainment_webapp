@@ -76,7 +76,12 @@ public class GamesController {
 	
 	@GetMapping("/gameDetail/{id}")
 	public String showGameDetail(@PathVariable("id") int id, Model model) {
+		Game foundGame = gamesService.findById(id);
+		if (foundGame == null) {
+			return "games/game-not-found";
+		}
 		model.addAttribute("game",gamesService.findById(id));
+		model.addAttribute("isFavourite",gamesService.isFavourite(foundGame,SecurityContextHolder.getContext().getAuthentication().getName()));
 		return "games/game-detail";
 	}
 	
@@ -106,10 +111,18 @@ public class GamesController {
 		}
 	}
 	
-	@GetMapping("/addToFavourite/{id}")
+	@GetMapping("/addToFavourites/{id}")
 	public String addToFavourite(@PathVariable(name = "id") int id) {
-		gamesService.addToFavourites(id, SecurityContextHolder.getContext().getAuthentication().getName());
-		return REDIRECTED;
+		String loggedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		gamesService.addToFavourites(id, loggedUser);
+		return "redirect:/games/favourite/"+loggedUser;
+	}
+	
+	@GetMapping("/removeFromFavourites/{id}")
+	public String removeFromFavourites(@PathVariable(name = "id") int id) {
+		String loggedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		gamesService.removeFromFavourites(id, loggedUser);
+		return "redirect:/games/favourite/"+loggedUser;
 	}
 	
 	@PostMapping("/removeGame/{id}")

@@ -168,7 +168,6 @@ public class FilmsService implements BaseService<Film> {
 
 	public boolean isFavourite(Film film, String user) {
 		Set<Film> favouriteFilms = getFavourites(user, null);
-		boolean favourite = favouriteFilms.stream().anyMatch(e -> e.getTitle().equals(film.getTitle()));
-		return favourite;
+		return favouriteFilms.stream().anyMatch(e -> e.getTitle().equals(film.getTitle()));
 	}
 }

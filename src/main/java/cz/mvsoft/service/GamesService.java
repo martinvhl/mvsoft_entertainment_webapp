@@ -126,7 +126,7 @@ public class GamesService implements BaseService<Game> {
 				break;
 			}
 		}
-		
+		ownerDao.save(owner);
 	}
 
 	private GameStudio findOrCreateDeveloper(String name) {
@@ -142,5 +142,10 @@ public class GamesService implements BaseService<Game> {
 		for (Game game : foundGames) {
 			game.setBase64Encoded(Base64.getEncoder().encodeToString(game.getImage()));
 		}
+	}
+
+	public boolean isFavourite(Game game, String user) {
+		Set<Game> favouriteGames = getFavourites(user, null);
+		return favouriteGames.stream().anyMatch(e -> e.getTitle().equals(game.getTitle()));
 	}
 }

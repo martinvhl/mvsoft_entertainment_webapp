@@ -114,14 +114,16 @@ public class FilmsController {
 	
 	@GetMapping("/addToFavourites/{id}")
 	public String addToFavourite(@PathVariable(name = "id") int id) {
-		filmService.addToFavourites(id,SecurityContextHolder.getContext().getAuthentication().getName());
-		return REDIRECTED;
+		String loggedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		filmService.addToFavourites(id,loggedUser);
+		return "redirect:/films/favourite/"+loggedUser;
 	}
 	
 	@GetMapping("/removeFromFavourites/{id}")
 	public String removeFromFavourites(@PathVariable(name = "id") int id) {
-		filmService.removeFromFavourites(id, SecurityContextHolder.getContext().getAuthentication().getName());
-		return REDIRECTED;
+		String loggedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		filmService.removeFromFavourites(id, loggedUser);
+		return "redirect:/films/favourite/"+loggedUser;
 	}
 	
 	@GetMapping("/showUpdateForm/{id}")

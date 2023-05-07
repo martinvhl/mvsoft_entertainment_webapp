@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity"
+	  lang="en">
 	<head>
 		<title>Game detail</title>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" type="image/x-icon" href="/images/film.ico">
+		<link rel="icon" type="image/x-icon" href="/images/game.ico">
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/game-detail.css}">
 		<script defer>
 			function deleteConfirmation() {
 			return confirm('Are you sure you want to delete this game?');
@@ -13,24 +16,45 @@
 	</head>
 	<body>
 		<div th:replace="~{fragments :: header}"></div>
-		<div th:replace="~{fragments :: navbar}"></div>
-		<div class="game-box">
-			<h3 th:text="${game.title}"></h3>
-			<h4 th:text="${game.year}"></h4>
-			<h4 th:text="${game.developer.name}"></h4>
-			<img th:src="*{'data:image/jpeg;base64,'+ game.base64Encoded}" width="100" height="150" alt="Film cover alt"/>
+		<div class="outer_container">
+			<div th:replace="~{fragments :: navbar}"></div>
+			<div class="game-box">
+				<div class="game_info">
+					<div class="game_detail"><h2 th:text="${game.title}"></h2></div>
+					<div class="game_detail"><h3>Year:</h3><h4 th:text="${game.year}"></h4></div>
+					<div class="game_detail"><h3>Game genre:</h3><h4 th:text="${game.gameType}"></h4></div>
+					<div class="game_detail"><h3>Developer:</h3><h4 th:text="${game.developer.name}"></h4></div>
+					<div class="game_detail"><h3>Description:</h3><p th:text="${game.description}"></p></div>
+					
+				</div>
+				
+				<div class="game_cover">
+					<img th:src="*{'data:image/jpeg;base64,'+ game.base64Encoded}" width="100" height="150" alt="Game cover alt"/>
+				</div>
+				
+			</div>
+			<div class="manipulation">
+				<div class="favourite" th:if="${#bools.isFalse(isFavourite)}">
+					<a th:href="@{/games/addToFavourites/}+${game.id}"><img src="/images/add.png" alt="Add to favourites"/></a>
+				</div>
+				
+				<div class="favourite" th:if="${#bools.isTrue(isFavourite)}">
+					<a th:href="@{/games/removeFromFavourites/}+${game.id}"><img src="/images/minus.png" alt="Remove from favourites"/></a>
+				</div>
+			
+				<div sec:authorize="hasRole('ROLE_ADMIN')">
+					<a th:href="@{/games/showUpdateForm/}+${game.id}"><img src="/images/update.png" alt="Update game info"/></a>
+					<form th:action="@{/games/removeGame/}+${game.id}" method="post" action="#">
+						<input type="hidden" name="_method" value="delete"/>
+						<input type="hidden" th:csrf="${_csrf.token}"/>
+						<input id="remove" type="image" src="/images/delete.png" alt="Submit" onclick="return deleteConfirmation();"/>
+					</form>
+				</div>
+			</div>
 		</div>
-		<hr>
-		<form th:action="@{/games/removeGame/}+${game.id}" method="post" action="#">
-			<input type="hidden" name="_method" value="delete"/>
-			<input type="hidden" th:csrf="${_csrf.token}"/>
-			<input id="remove" type="submit" value="Delete this game" onclick="return deleteConfirmation();"/>
-		</form>
-		<a th:href="@{/games/showUpdateForm/}+${game.id}">
-			<button type="button">Update game details</button>
-		</a>
-		<hr>
-		<a th:href="@{/games/list}">Back to list...</a>
+		<div id="back">
+			<a th:href="@{/games/list}"><button type="button">Back to list...</button></a>
+		</div>
 		<br>
 		<div th:replace="~{fragments :: footer}"></div>
 	</body>

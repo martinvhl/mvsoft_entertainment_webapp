@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	font-size: 100%;
+	vertical-align: baseline;
+    }
+
+body {
+	background: linear-gradient(180deg, red,black);
+}
+.outer_container{
+	display:flex;
+	flex-direction:row;
+	justify-content: flex-start;
+	width: 100%;
+	margin-bottom:1vh;
+}
+.game-box {
+	display: flex;
+	width: 70%;
+	border:1px solid black;
+}
+.game_info {
+	width:50%;
+	padding: 1%;
+}
+
+.game_detail {
+	display:flex;
+	justify-content:space-around;
+	border-bottom: 1px solid black;
+	margin:1vh;
+	padding:1%;
+}
+.game_detail:first-child {
+	justify-content: center;
+	align-items: center;
+	padding: 2%;
+}
+.game_detail:last-child {
+	border-bottom:none;
+}
+.game_detail h2 {
+	font-family: 'Poppins', sans-serif;
+	font-weight:bold;
+	font-size:2em;
+}
+.game_detail h3 {
+	font-family: 'Poppins', sans-serif;
+	font-weight:500;
+	font-size:1.5em;
+}
+.game_detail h4 {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 400;
+	font-size:1.3em;
+}
+#actors ul{
+	list-style-type: none;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 300;
+	font-size:1.1em;
+}
+.game_detail p{
+	font-family:'Poppins', sans-serif;
+	font-size:0.9em;
+	padding-top:0.8vh;
+	padding-left:2vh;
+	color:red;
+	-webkit-filter: invert(75%);
+    filter: invert(75%);
+}
+.game_cover {
+	width:50%;
+	padding: 1%;
+}
+
+.game_cover img {
+	width:100%;
+	height: auto;
+	border-radius: 10px;
+}
+
+.manipulation {
+	display: flex;
+	flex-direction: column;
+	justify-content:flex-start;
+	align-items: center;
+	width: 15%;
+}
+
+#back {
+	display:flex;
+	justify-content: center;
+}
+#back:hover {
+	cursor: pointer;
+}
+#back button {
+  background:none;
+  border: 1px dashed red;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius:5px;
+}
+
+#back button:hover {
+	border: 1px solid black;
+	cursor: pointer;
+	color:black;
+	background-color: whitesmoke;
+}
+
+.film-box .actors {
+	display:flex;
+	flex-direction: column;
+}
+
+.actors h6 {
+	font-weight: bold;
+	display:block;
+}
+
+#not_found {
+	align-self:center;
+	justify-content:center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-size: 2em;
+}
