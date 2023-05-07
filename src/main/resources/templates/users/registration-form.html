@@ -7,6 +7,20 @@
 		<!-- Add css link -->
 		<link rel="stylesheet" type="text/css" th:href="@{/css/fragment_styles.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/css/register.css}">
+	
+		<script type="text/javascript" defer="defer">
+			const validate_password = () => {
+				let password = document.getElementById('password').value;
+				let confirm_password = document.getElementById('confirm_password').value;	
+				if (password != confirm_password) {
+					document.getElementById('confirm-password-lbl').style.color = 'black'; 
+					document.getElementById('confirm-password-lbl').innerHTML = "Password doesn't match!";
+				} else {
+					document.getElementById('confirm-password-lbl').style.color = 'green'; 
+					document.getElementById('confirm-password-lbl').innerHTML = "Password match!";
+				}
+			}
+		</script>
 	</head>
 	<body>
 	<div class="register-box">
@@ -40,13 +54,21 @@
 			</div>
 			
 			<div class="input-field">
+		        <label for="confirm_password">Confirm password:</label>
+		        <input type="password" id="confirm_password" name="password" th:field="*{password}" placeholder="Confirm your password..." onkeyup="validate_password()"/>
+		        <label for="confirm_password" id="confirm-password-lbl"></label>
+		        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span><br/>
+			</div>
+			
+			<div class="input-field">
 		        <label for="email">Email:</label>
 		        <input type="email" id="email" name="email" th:field="*{email}" placeholder="Enter your email..."/>
 		        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span><br/>
 			</div>
-			
-			<input type="hidden" th:csrf="${_csrf.token}"/>
-			<button type="submit">Register</button>
+			<div id="confirm-button">
+				<input type="hidden" th:csrf="${_csrf.token}"/>
+				<button type="submit">Register</button>
+			</div>
 		</form>
 		<div id="return_button">
 			<a th:href="@{/login/showLoginPage}">Back</a>

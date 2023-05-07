@@ -79,8 +79,7 @@ public class FilmsService implements BaseService<Film> {
 		
 		//saving image from multipart file
 		try (InputStream inputStream = imageFile.getInputStream()) {
-	        byte[] imageData = inputStream.readAllBytes();
-	        film.setImage(imageData);
+	        film.setImage(inputStream.readAllBytes());
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }

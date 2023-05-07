@@ -21,8 +21,6 @@ body{
 	display:flex;
 	flex-direction: column;
 	flex-wrap:wrap;
-	justify-content:space-between;
-	align-items: center;
 	border-bottom: 3px solid black;
 	padding-bottom:1vh;
 }
@@ -39,8 +37,8 @@ body{
 }
 .input-field {
 	display:flex;
-	flex-direction: row;
-	justify-content: center;
+	flex-wrap:wrap;
+	justify-content: space-between;
 	margin:1vh;
 	padding:1vh;
 	align-items: center;
@@ -66,6 +64,14 @@ body{
 	font-size:1em;
 	font-weight:500;
 	color:white;
+}
+#confirm-button {
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items:center;
+	width:20%;
+	align-self: center;
 }
 .register-form button {
 	font-family: 'Poppins',sans-serif;
