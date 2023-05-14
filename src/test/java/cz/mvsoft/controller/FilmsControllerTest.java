@@ -75,13 +75,13 @@ class FilmsControllerTest {
         
         Page<Film> page = new PageImpl<>(films);
         
-    	when(filmService.findAll(PageRequest.of(0,8))).thenReturn(page.getContent());
+    	when(filmService.findAll(PageRequest.of(0,8))).thenReturn(page);
     	
         mockMvc.perform(get("/films/list"))
             .andExpect(status().isOk())
             .andExpect(view().name("films/films-list"))
             .andExpect(model().attribute("films", hasSize(2)))
-            .andExpect(model().attribute("films",equalTo(films)));
+            .andExpect(model().attribute("films",equalTo(page.getContent())));
 
         verify(filmService, times(1)).findAll(PageRequest.of(0, 8));
         verifyNoMoreInteractions(filmService);

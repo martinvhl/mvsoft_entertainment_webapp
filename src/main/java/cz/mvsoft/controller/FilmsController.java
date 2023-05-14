@@ -1,6 +1,7 @@
 package cz.mvsoft.controller;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,14 +46,14 @@ public class FilmsController {
 	}
 	
 	@GetMapping("/list")
-	public String getAllFilms(Model theModel, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
-		theModel.addAttribute(FILMS_ATTRIBUTE,filmService.findAll(PageRequest.of(page, size)));
+	public String getAllFilms(Model theModel, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "16") int size) {
+		Page<Film> films = filmService.findAll(PageRequest.of(page, size));
+		theModel.addAttribute(FILMS_ATTRIBUTE,films.getContent());
 		
-		theModel.addAttribute("currentPage",1);
-		theModel.addAttribute("totalItems", 300);
-	    theModel.addAttribute("totalPages", 12);
+		theModel.addAttribute("currentPage",films.getNumber() + 1);
+		theModel.addAttribute("totalItems", films.getTotalElements());
+	    theModel.addAttribute("totalPages", films.getTotalPages());
 	    theModel.addAttribute("pageSize", size);
-	    
 		return LIST;
 	}
 	

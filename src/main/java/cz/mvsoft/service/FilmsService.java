@@ -38,12 +38,10 @@ public class FilmsService implements BaseService<Film> {
 	}
 
 	@Override
-	public List<Film> findAll(Pageable pageable) {
-		
+	public Page<Film> findAll(Pageable pageable) {
 		Page<Film> pagedFilms = filmDao.findAllByOrderByTitleAsc(pageable);
-		List<Film> foundFilms = pagedFilms.getContent();
-		encodeFilm(foundFilms);
-		return foundFilms;
+		encodeFilm(pagedFilms.getContent());
+		return pagedFilms;
 	}
 
 	@Override

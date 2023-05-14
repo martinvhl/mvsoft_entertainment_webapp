@@ -23,12 +23,25 @@
 	<div th:fragment="navbar" class="custom_navbar">
 		<nav>
 			<ul>
-				<a th:href="@{/films/list}"><li>Films</li></a>
-				<a th:href="@{/games/list}"><li>Games</li></a>
-				<a th:href="@{/}"><li>About Me</li></a>
+				<a th:href="@{/films/list}"><li>All Films</li></a>
+				<a th:href="@{/films/favourite/}"><li>My Favourite <br>Films</li></a>				
+				<a th:href="@{/games/list}"><li>All Games</li></a>
+				<a th:href="@{/games/favourite}"><li>My Favourite <br>Games</li></a>
+				<a th:href="@{/}"><li>Main Page</li></a>
 			</ul>
 		</nav>
 	</div>
+	
+	<a th:fragment="paging(currentPage, label, tooltip)" class="page_link"
+		th:href="@{'/films/list?' + 'page=' +${currentPage-1} + '&size=' + ${pageSize}}" th:title="${tooltip}" rel="tooltip">
+		[[${label}]]
+	</a>
+	
+	<a th:fragment="pagingGames(currentPage, label, tooltip)" class="page_link"
+		th:href="@{'/games/list?' + 'page=' +${currentPage-1} + '&size=' + ${pageSize}}" th:title="${tooltip}" rel="tooltip">
+		[[${label}]]
+	</a>
+	
 	<div th:fragment="footer" class="custom_footer">
 		<img src="/images/film_sparkles.jpg" alt="Film tape made from sparkles"/>
 		<footer>

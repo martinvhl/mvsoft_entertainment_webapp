@@ -4,7 +4,7 @@ package cz.mvsoft.entity.entertainment.enums;
 public enum FilmGenre {
 	
 	DRAMA("Drama"), SCIFI("Sci-fi"), COMICS("Comics"), WESTERN("Western"), HORROR("Horror"), HISTORIC("History"), WAR("War"), DOCUMENT("Document"),
-	ROMANTIC("Romantic"), ADVENTURE("Adventure"), CARTOON("Cartoon"), FAIRY_TALE("Fairy-tale"), FANTASY("Fantasy"), COMEDY("Comedy");
+	ROMANTIC("Romantic"), ADVENTURE("Adventure"), CARTOON("Cartoon"), FAIRY_TALE("Fairy-tale"), FANTASY("Fantasy"), COMEDY("Comedy"), THRILLER("Thriller"), MYSTERIOUS("Mysterious");
 
 	private final String displayName;
 	

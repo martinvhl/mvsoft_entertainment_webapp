@@ -35,7 +35,7 @@ public class RESTFilmsController {
 			@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size){
 		if (filmName == null || filmName.isBlank()) {
 			Pageable pageable = PageRequest.of(page, size);
-			return new ResponseEntity<>(filmsService.findAll(pageable),HttpStatus.OK);
+			return new ResponseEntity<>(filmsService.findAll(pageable).getContent(),HttpStatus.OK);
 		}
 		List<Film> filteredFilms = filmsService.filter(filmName);
 		return new ResponseEntity<>(filteredFilms,HttpStatus.OK);

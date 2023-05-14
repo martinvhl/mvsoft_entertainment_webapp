@@ -29,6 +29,35 @@
 				</div>
 			</div>
 		</div>
+		
+		<nav aria-label="Pagination" th:if="${totalPages > 0}">
+			<div class="pagination_container">
+				<ul class="pagination_list">
+					<li class="page_item" th:classappend="${currentPage == 1} ? 'disabled'">
+						<a th:replace="~{fragments :: pagingGames(1,'<<','First Page')}"></a>
+					</li>
+					<li class="page_item" th:classappend="${currentPage == 1} ? 'disabled'">
+						<a th:replace="~{fragments :: pagingGames(${currentPage -1}, 'Prev', 'Previous Page')}"></a>
+					</li>
+					<li class="page_item disabled" th:if="${currentPage - 2 > 1}">
+						<a class="page-link" href="#">...</a>
+					</li>
+					<li class="page_item" th:classappend="${page == currentPage} ? 'active'"
+						th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+						<a th:replace="~{fragments :: pagingGames(${page}, ${page}, 'Page '+${page})}"></a>
+					</li>
+					<li class="page_item disabled" th:if="${currentPage + 2 < totalPages}">
+			          <a class="page-link" href="#">...</a>
+			        </li>
+			        <li class="page_item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+			          <a th:replace="~{fragments :: pagingGames(${currentPage + 1},'Next', 'Next Page')}"></a>
+			        </li>
+					<li class="page_item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+			          <a th:replace="~{fragments :: pagingGames(${totalPages}, '>>', 'Last Page')}"></a>
+			        </li>
+				</ul>
+			</div>
+		</nav>
 		<div th:replace="~{fragments :: footer}"></div>
 	</body>
 </html>

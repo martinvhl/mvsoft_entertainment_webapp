@@ -35,7 +35,7 @@ public class RESTGamesController {
 			@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
 		if (gameName == null || gameName.isBlank()) {
 			Pageable pageable = PageRequest.of(page, size);
-			return new ResponseEntity<>(gamesService.findAll(pageable),HttpStatus.OK);
+			return new ResponseEntity<>(gamesService.findAll(pageable).getContent(),HttpStatus.OK);
 		}
 		List<Game> filteredGames = gamesService.filter(gameName);
 		return new ResponseEntity<>(filteredGames,HttpStatus.OK);

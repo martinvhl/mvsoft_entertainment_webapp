@@ -3,6 +3,7 @@ package cz.mvsoft.service;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +11,7 @@ import cz.mvsoft.entity.entertainment.BaseEntity;
 
 public interface BaseService<T extends BaseEntity> {
 	
-	public List<T> findAll(Pageable pageable);
+	public Page<T> findAll(Pageable pageable);
 	
 	public T findById(int theId);
 	

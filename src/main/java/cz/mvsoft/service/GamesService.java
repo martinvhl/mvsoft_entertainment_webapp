@@ -37,11 +37,10 @@ public class GamesService implements BaseService<Game> {
 	}
 
 	@Override
-	public List<Game> findAll(Pageable pageable) {
+	public Page<Game> findAll(Pageable pageable) {
 		Page<Game> pagedGames = gameDao.findAllByOrderByTitleAsc(pageable);
-		List<Game> foundGames = pagedGames.getContent();
-		encodeCover(foundGames);
-		return foundGames;
+		encodeCover(pagedGames.getContent());
+		return pagedGames;
 	}
 
 	@Override
