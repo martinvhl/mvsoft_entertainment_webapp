@@ -48,6 +48,7 @@ public class FilmsController {
 	@GetMapping("/list")
 	public String getAllFilms(Model theModel, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "16") int size) {
 		Page<Film> films = filmService.findAll(PageRequest.of(page, size));
+		
 		theModel.addAttribute(FILMS_ATTRIBUTE,films.getContent());
 		
 		theModel.addAttribute("currentPage",films.getNumber() + 1);

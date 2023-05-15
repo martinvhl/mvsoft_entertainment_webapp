@@ -67,13 +67,13 @@ class FilmsControllerTest {
     @Test
     @DisplayName("testing getAllFilms")
     void testGetAllFilms() throws Exception {
-    	List<Film> films = new ArrayList<>();
+    	List<Film> foundFilms = new ArrayList<>();
         Film film1 = Film.builder().id(1).title("Avatar").year(2009).director("James Cameron").length(180).build();
         Film film2 = Film.builder().id(2).title("Vetřelec").year(1978).director("Ridley Scott").length(105).build();
-        films.add(film1);
-        films.add(film2);
+        foundFilms.add(film1);
+        foundFilms.add(film2);
         
-        Page<Film> page = new PageImpl<>(films);
+        Page<Film> page = new PageImpl<>(foundFilms);
         
     	when(filmService.findAll(PageRequest.of(0,8))).thenReturn(page);
     	

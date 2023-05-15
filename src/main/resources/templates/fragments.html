@@ -21,12 +21,19 @@
 		</header>
 	</div>
 	<div th:fragment="navbar" class="custom_navbar">
+		<script>
+			const loggedUser = document.getElementById("username").value;
+
+			const favouriteFilms = () => {
+					
+			}
+		</script>
 		<nav>
 			<ul>
 				<a th:href="@{/films/list}"><li>All Films</li></a>
-				<a th:href="@{/films/favourite/}"><li>My Favourite <br>Films</li></a>				
+				<a th:href="@{/films/favourite/{username}(username=${#authentication.principal.username})}"><li>My Favourite <br>Films</li></a>				
 				<a th:href="@{/games/list}"><li>All Games</li></a>
-				<a th:href="@{/games/favourite}"><li>My Favourite <br>Games</li></a>
+				<a th:href="@{/games/favourite/{username}(username=${#authentication.principal.username})}"><li>My Favourite <br>Games</li></a>
 				<a th:href="@{/}"><li>Main Page</li></a>
 			</ul>
 		</nav>
